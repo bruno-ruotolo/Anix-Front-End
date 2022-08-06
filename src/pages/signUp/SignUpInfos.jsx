@@ -10,41 +10,52 @@ import "antd/dist/antd.css";
 import __styledVariables from "../../global/StyledVariables";
 import DropDown from "../../components/DropDown";
 import signUpService from "../../services/signUpService";
+import { TailSpin } from "react-loader-spinner";
 
 export default function SignUpInfos() {
   const navigate = useNavigate();
 
   const { signUp, setSignUp } = useContext(SignUpContext);
+
   const [gendersArr, setGendersArr] = useState();
-
-  useEffect(() => {
-    if (signUp?.username && signUp?.image && signUp?.genderId)
-      navigate("/signup/genres");
-
-    if (!signUp?.email || !signUp?.password) navigate("/signup");
-    async function getAllGenres() {
-      try {
-        const promise = await signUpService.getAllGenders();
-        setGendersArr(promise);
-      } catch (e) {
-        console.log(
-          "Somenthing Went Wrong on TryCatch Block (DropDown.jsx [12])"
-        );
-      }
-    }
-    getAllGenres();
-  }, [signUp, navigate]);
-
   const [signUpData, setSignUpData] = useState({
     username: "",
     image: "",
     genderId: "",
   });
-  const [pageLoading, setPageLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
+
+  useEffect(() => {
+    setPageLoading(true);
+    if (signUp?.username && signUp?.image && signUp?.genderId) {
+      setPageLoading(false);
+      navigate("/signup/genres");
+    }
+
+    if (!signUp?.email || !signUp?.password) {
+      setPageLoading(false);
+      navigate("/signup");
+    }
+    async function getAllGenres() {
+      try {
+        const promise = await signUpService.getAllGenders();
+        setPageLoading(false);
+        setGendersArr(promise);
+      } catch (e) {
+        console.log(
+          "Somenthing Went Wrong on TryCatch Block (DropDown.jsx [12])"
+        );
+        setPageLoading(false);
+      }
+    }
+    getAllGenres();
+  }, [signUp, navigate]);
 
   function handleForm(e) {
+    setPageLoading(true);
     e.preventDefault();
     setSignUp({ ...signUp, ...signUpData });
+    setPageLoading(false);
     navigate("/signup/genres");
   }
 
@@ -77,6 +88,7 @@ export default function SignUpInfos() {
           required
         />
         <DropDown
+          disabled={pageLoading}
           type="Gender"
           array={gendersArr}
           setCallBack={(value) =>
@@ -84,7 +96,16 @@ export default function SignUpInfos() {
           }
         />
         <button disabled={pageLoading}>
-          {pageLoading ? "Loading..." : "Next"}
+          {pageLoading ? (
+            <TailSpin
+              width="40"
+              height="80"
+              radius="2"
+              color={__styledVariables.buttonFontColor}
+            />
+          ) : (
+            "Next"
+          )}
         </button>
       </Form>
     </SignUpCredentialsMain>

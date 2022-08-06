@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { RiEye2Line, RiEyeCloseFill } from "react-icons/ri";
@@ -7,14 +7,16 @@ import AnixLogo from "../../assets/AnixLogo.png";
 import __styledVariables from "../../global/StyledVariables";
 import signUpService from "../../services/signUpService";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function SignIn() {
   const navigate = useNavigate();
 
+  const { setAuth } = useContext(AuthContext);
+
   const [signInData, setSignInData] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
   });
   const [pageLoading, setPageLoading] = useState(false);
   const [showPassword, setShowPassword] = useState({
@@ -30,10 +32,35 @@ export default function SignIn() {
     e.preventDefault();
     setValidations({ ...validations, password: true });
     try {
-      await signUpService.validateEmail({ email: signInData.email });
+      const token = await signUpService.createTokenAndLogin(signInData);
       setValidations({ ...validations, password: false });
-      navigate("/signIn/infos");
-    } catch (e) {}
+      setAuth(token);
+      localStorage.setItem("auth", token);
+      navigate("/home");
+    } catch (e) {
+      if (e.response.status === 401) {
+        Swal.fire({
+          title: "Invalid Email/Password",
+          width: "90%",
+          fontSize: 20,
+          background: "#F3EED9",
+          confirmButtonColor: `${__styledVariables.buttonMainColor}`,
+          color: `${__styledVariables.inputFontColor}`,
+          icon: "error",
+        });
+      } else {
+        Swal.fire({
+          title: "Something got wrong",
+          text: "Try agains later!",
+          width: "90%",
+          fontSize: 20,
+          background: "#F3EED9",
+          confirmButtonColor: `${__styledVariables.buttonMainColor}`,
+          color: `${__styledVariables.inputFontColor}`,
+          icon: "error",
+        });
+      }
+    }
   }
 
   function handleInput(e, property) {

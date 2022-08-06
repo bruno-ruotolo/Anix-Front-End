@@ -72,6 +72,9 @@ body {
 }
 
 button {
+	display: flex;
+  align-items: center;
+  justify-content: center;
   height: 52px;
   border: none;
   border-radius: 10px;

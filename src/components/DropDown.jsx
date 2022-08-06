@@ -7,7 +7,7 @@ import Select from "@mui/material/Select";
 import styled from "styled-components";
 import __styledVariables from "../global/StyledVariables";
 
-export default function DropDown({ type, array, setCallBack }) {
+export default function DropDown({ type, array, setCallBack, disabled }) {
   const [value, setValue] = useState();
   const [genreSelect, setGenreSelect] = useState(false);
   const handleChange = (event) => {
@@ -26,6 +26,7 @@ export default function DropDown({ type, array, setCallBack }) {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={value}
+            disabled={disabled}
             label={type}
             onChange={handleChange}
             styles={{ backgroundColor: "red" }}

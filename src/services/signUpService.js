@@ -6,8 +6,6 @@ async function createUser(data) {
   return response.data;
 }
 
-//TODO Mudar para Gender
-
 async function getAllGenres() {
   const response = await api.get("/genres");
   return response.data;
@@ -23,11 +21,21 @@ async function validateEmail(data) {
   return response.data;
 }
 
+async function createTokenAndLogin(data) {
+  console.log(
+    "🚀 ~ file: signUpService.js ~ line 25 ~ createTokenAndLogin ~ data",
+    data
+  );
+  const response = await api.post("/", data);
+  return response.data;
+}
+
 const signUpService = {
   getAllGenres,
   getAllGenders,
   validateEmail,
   createUser,
+  createTokenAndLogin,
 };
 
 export default signUpService;

@@ -9,6 +9,7 @@ import AnixLogo from "../../assets/AnixLogo.png";
 import __styledVariables from "../../global/StyledVariables";
 import signUpService from "../../services/signUpService";
 import Swal from "sweetalert2";
+import { TailSpin } from "react-loader-spinner";
 
 export default function SignUpCredentials() {
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ export default function SignUpCredentials() {
   async function handleForm(e) {
     e.preventDefault();
     e.persist();
+    setPageLoading(true);
     if (signUpData.password !== signUpData.confirmPassword) {
       Swal.fire({
         title: "Passwords must be equals!",
@@ -48,6 +50,7 @@ export default function SignUpCredentials() {
         color: `${__styledVariables.inputFontColor}`,
         icon: "error",
       });
+      setPageLoading(false);
       setValidations({ ...validations, password: true });
     } else {
       try {
@@ -55,6 +58,7 @@ export default function SignUpCredentials() {
         setValidations({ ...validations, password: false });
         delete signUpData.confirmPassword;
         setSignUp({ ...signUp, ...signUpData });
+        setPageLoading(false);
         navigate("/signup/infos");
       } catch (e) {
         if (e.response.status === 409) {
@@ -68,6 +72,7 @@ export default function SignUpCredentials() {
             color: `${__styledVariables.inputFontColor}`,
             icon: "error",
           });
+          setPageLoading(false);
         } else {
           Swal.fire({
             title: "Something got wrong",
@@ -79,6 +84,7 @@ export default function SignUpCredentials() {
             color: `${__styledVariables.inputFontColor}`,
             icon: "error",
           });
+          setPageLoading(false);
         }
       }
     }
@@ -170,7 +176,16 @@ export default function SignUpCredentials() {
           )}
         </PaswordInputDiv>
         <button type="submit" disabled={pageLoading}>
-          {pageLoading ? "Loading..." : "Continue"}
+          {pageLoading ? (
+            <TailSpin
+              width="40"
+              height="80"
+              radius="2"
+              color={__styledVariables.buttonFontColor}
+            />
+          ) : (
+            "Continue"
+          )}
         </button>
       </Form>
 

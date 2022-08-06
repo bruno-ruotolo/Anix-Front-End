@@ -10,11 +10,12 @@ import "antd/dist/antd.css";
 import __styledVariables from "../../global/StyledVariables";
 import DropDown from "../../components/DropDown";
 import signUpService from "../../services/signUpService";
+import { TailSpin } from "react-loader-spinner";
 
 export default function SignUpGenres() {
   const navigate = useNavigate();
 
-  const { signUp, setSignUp } = useContext(SignUpContext);
+  const { signUp } = useContext(SignUpContext);
 
   const [genresArr, setGenresArr] = useState();
   const [signUpData, setSignUpData] = useState({
@@ -25,29 +26,47 @@ export default function SignUpGenres() {
   const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
-    if (!signUp?.email || !signUp?.password) navigate("/signup");
-    if (!signUp?.username || !signUp?.image || !signUp?.genderId)
+    setPageLoading(true);
+    if (!signUp?.email || !signUp?.password) {
+      navigate("/signup");
+      setPageLoading(false);
+    }
+    if (!signUp?.username || !signUp?.image || !signUp?.genderId) {
       navigate("/signup/infos");
+      setPageLoading(false);
+    }
     async function getAllGenres() {
       try {
         const promise = await signUpService.getAllGenres();
         setGenresArr(promise);
+        setPageLoading(false);
       } catch (e) {
         console.log(
           "Somenthing Went Wrong on TryCatch Block (DropDown.jsx [12])"
         );
+        setPageLoading(false);
       }
     }
     getAllGenres();
-  }, []);
+  }, [
+    navigate,
+    signUp?.email,
+    signUp?.password,
+    signUp?.username,
+    signUp?.image,
+    signUp?.genderId,
+  ]);
 
   async function handleForm(e) {
     e.preventDefault();
+    setPageLoading(true);
     try {
       await signUpService.createUser({ ...signUp, ...signUpData });
+      setPageLoading(false);
       navigate("/home");
     } catch (error) {
       console.log(e.response.data);
+      setPageLoading(false);
     }
   }
 
@@ -57,6 +76,7 @@ export default function SignUpGenres() {
       <Form onSubmit={handleForm}>
         <h2>Select 3 of your favorites anime genres</h2>
         <DropDown
+          disabled={pageLoading}
           className="drop-down"
           type="First Genre"
           array={genresArr}
@@ -66,6 +86,7 @@ export default function SignUpGenres() {
         />
 
         <DropDown
+          disabled={pageLoading}
           type="Second Genre"
           array={genresArr}
           setCallBack={(value) =>
@@ -74,6 +95,7 @@ export default function SignUpGenres() {
         />
 
         <DropDown
+          disabled={pageLoading}
           type="Third Genre"
           array={genresArr}
           setCallBack={(value) =>
@@ -81,7 +103,16 @@ export default function SignUpGenres() {
           }
         />
         <button type="submit" disabled={pageLoading}>
-          {pageLoading ? "Loading..." : "Register"}
+          {pageLoading ? (
+            <TailSpin
+              width="40"
+              height="80"
+              radius="2"
+              color={__styledVariables.buttonFontColor}
+            />
+          ) : (
+            "Register"
+          )}
         </button>
       </Form>
     </SignUpCredentialsMain>
