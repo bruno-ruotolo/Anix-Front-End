@@ -1,25 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { RiEye2Line, RiEyeCloseFill } from "react-icons/ri";
-
-import { SignUpContext } from "../../contexts/SignUpContext";
 
 import AnixLogo from "../../assets/AnixLogo.png";
 import __styledVariables from "../../global/StyledVariables";
 import signUpService from "../../services/signUpService";
 import Swal from "sweetalert2";
 
-export default function SignUpCredentials() {
+export default function SignIn() {
   const navigate = useNavigate();
 
-  const { signUp, setSignUp } = useContext(SignUpContext);
-
-  useEffect(() => {
-    if (signUp?.email && signUp?.password) navigate("/signup/infos");
-  }, [signUp, navigate]);
-
-  const [signUpData, setSignUpData] = useState({
+  const [signInData, setSignInData] = useState({
     email: "",
     password: "",
     confirmPassword: "",
@@ -36,56 +28,16 @@ export default function SignUpCredentials() {
 
   async function handleForm(e) {
     e.preventDefault();
-    e.persist();
-    if (signUpData.password !== signUpData.confirmPassword) {
-      Swal.fire({
-        title: "Passwords must be equals!",
-        text: "Check your password confirmation",
-        width: "90%",
-        fontSize: 20,
-        background: "#F3EED9",
-        confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-        color: `${__styledVariables.inputFontColor}`,
-        icon: "error",
-      });
-      setValidations({ ...validations, password: true });
-    } else {
-      try {
-        await signUpService.validateEmail({ email: signUpData.email });
-        setValidations({ ...validations, password: false });
-        delete signUpData.confirmPassword;
-        setSignUp({ ...signUp, ...signUpData });
-        navigate("/signup/infos");
-      } catch (e) {
-        if (e.response.status === 409) {
-          Swal.fire({
-            title: "Invalid Email",
-            text: "This email isn't available",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
-        } else {
-          Swal.fire({
-            title: "Something got wrong",
-            text: "Try agains later!",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
-        }
-      }
-    }
+    setValidations({ ...validations, password: true });
+    try {
+      await signUpService.validateEmail({ email: signInData.email });
+      setValidations({ ...validations, password: false });
+      navigate("/signIn/infos");
+    } catch (e) {}
   }
 
   function handleInput(e, property) {
-    setSignUpData({ ...signUpData, [property]: e.target.value });
+    setSignInData({ ...signInData, [property]: e.target.value });
   }
 
   function handleShowPassword(status, property) {
@@ -95,7 +47,7 @@ export default function SignUpCredentials() {
   }
 
   return (
-    <SignUpCredentialsMain>
+    <SignInCredentialsMain>
       <img src={AnixLogo} alt="AnixLogo" />
       <Form onSubmit={handleForm}>
         <input
@@ -104,7 +56,7 @@ export default function SignUpCredentials() {
           placeholder="Email"
           autoComplete="true"
           onErrorCapture={console.log("erro")}
-          value={signUpData.email}
+          value={signInData.email}
           onChange={(e) => handleInput(e, "email")}
           disabled={pageLoading}
           required
@@ -115,7 +67,7 @@ export default function SignUpCredentials() {
             type={showPassword.password ? "text" : "password"}
             placeholder="Password"
             autoComplete="true"
-            value={signUpData.password}
+            value={signInData.password}
             pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[.@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
             onChange={(e) => handleInput(e, "password")}
             disabled={pageLoading}
@@ -139,55 +91,27 @@ export default function SignUpCredentials() {
             />
           )}
         </PaswordInputDiv>
-        <PaswordInputDiv passwordValidation={validations.password}>
-          <input
-            className="signUpConfirmPassword"
-            type={showPassword.confirm ? "text" : "password"}
-            placeholder="Confirm Password"
-            autoComplete="true"
-            pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[.@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
-            value={signUpData.confirmPassword}
-            onChange={(e) => handleInput(e, "confirmPassword")}
-            disabled={pageLoading}
-            required
-          />
-          {showPassword.confirm ? (
-            <RiEye2Line
-              className="eyeIcon"
-              id="eyeOpen"
-              onClick={() =>
-                handleShowPassword(showPassword.confirm, "confirm")
-              }
-            />
-          ) : (
-            <RiEyeCloseFill
-              className="eyeIcon"
-              id="eyeClose"
-              onClick={() =>
-                handleShowPassword(showPassword.confirm, "confirm")
-              }
-            />
-          )}
-        </PaswordInputDiv>
         <button type="submit" disabled={pageLoading}>
-          {pageLoading ? "Loading..." : "Continue"}
+          {pageLoading ? "Loading..." : "login"}
         </button>
       </Form>
 
-      <p onClick={() => navigate("/")}>Have you already done it? Login here!</p>
-    </SignUpCredentialsMain>
+      <p onClick={() => navigate("/signup")}>
+        Are you lost? Click here to sign up!
+      </p>
+    </SignInCredentialsMain>
   );
 }
 
-const SignUpCredentialsMain = styled.main`
+const SignInCredentialsMain = styled.main`
   position: relative;
   height: 100vh;
   width: 100vw;
 
   img {
     position: absolute;
-    width: 113px;
-    height: 102px;
+    width: 177px;
+    height: 160px;
     top: 30px;
     left: 50%;
     transform: translate(-50%, 0);

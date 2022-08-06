@@ -92,8 +92,10 @@ input {
   width: 85%;
   max-width: 1000px;
 	height: 55px;
+	border-style: solid;
+  border-width: 2px;
+	border-color: #28161C;
 	background: ${__styledVariables.inputMainColor};
-	border: none;
 	border-radius: 10px;
 	padding-left: 15px;
 	padding-right: 35px;
@@ -117,6 +119,30 @@ form {
   justify-content: center;
   align-items: center;
 }
+
+#menu-item {
+  font-family: ${__styledVariables.mainFont};
+}
+
+.swal2-title, 
+.swal2-html-container,
+.swal2-confirm
+.swal2-styled {
+	font-family: ${__styledVariables.mainFont};
+}
+
+.swal2-confirm {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 60px;
+	width: 160px;
+
+	text-align: center;
+	vertical-align: center;
+	font-size: 50px;
+}
+
 `;
 
 export default GlobalStyled;
