@@ -105,11 +105,10 @@ export default function SignUpCredentials() {
       <img src={AnixLogo} alt="AnixLogo" />
       <Form onSubmit={handleForm}>
         <input
-          id="signUpEmail"
+          id="signup-email"
           type="email"
           placeholder="Email"
           autoComplete="true"
-          onErrorCapture={console.log("erro")}
           value={signUpData.email}
           onChange={(e) => handleInput(e, "email")}
           disabled={pageLoading}
@@ -117,7 +116,7 @@ export default function SignUpCredentials() {
         />
         <PaswordInputDiv>
           <input
-            id="signUpPassword"
+            id="signup-password"
             type={showPassword.password ? "text" : "password"}
             placeholder="Password"
             autoComplete="true"
@@ -147,7 +146,7 @@ export default function SignUpCredentials() {
         </PaswordInputDiv>
         <PaswordInputDiv passwordValidation={validations.password}>
           <input
-            className="signUpConfirmPassword"
+            id="signup-confirm-password"
             type={showPassword.confirm ? "text" : "password"}
             placeholder="Confirm Password"
             autoComplete="true"
@@ -175,7 +174,11 @@ export default function SignUpCredentials() {
             />
           )}
         </PaswordInputDiv>
-        <button type="submit" disabled={pageLoading}>
+        <button
+          id="signup-credential-button"
+          type="submit"
+          disabled={pageLoading}
+        >
           {pageLoading ? (
             <TailSpin
               width="40"
@@ -189,7 +192,9 @@ export default function SignUpCredentials() {
         </button>
       </Form>
 
-      <p onClick={() => navigate("/")}>Have you already done it? Login here!</p>
+      <p id="navigate-signin" onClick={() => navigate("/")}>
+        Have you already done it? Login here!
+      </p>
     </SignUpCredentialsMain>
   );
 }

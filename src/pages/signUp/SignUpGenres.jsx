@@ -6,7 +6,6 @@ import React from "react";
 import { SignUpContext } from "../../contexts/SignUpContext";
 
 import AnixLogo from "../../assets/AnixLogo.png";
-import "antd/dist/antd.css";
 import __styledVariables from "../../global/StyledVariables";
 import DropDown from "../../components/DropDown";
 import signUpService from "../../services/signUpService";
@@ -63,7 +62,7 @@ export default function SignUpGenres() {
     try {
       await signUpService.createUser({ ...signUp, ...signUpData });
       setPageLoading(false);
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.log(e.response.data);
       setPageLoading(false);
@@ -76,6 +75,7 @@ export default function SignUpGenres() {
       <Form onSubmit={handleForm}>
         <h2>Select 3 of your favorites anime genres</h2>
         <DropDown
+          id="select-box-first-genre"
           disabled={pageLoading}
           className="drop-down"
           type="First Genre"
@@ -86,6 +86,7 @@ export default function SignUpGenres() {
         />
 
         <DropDown
+          id="select-box-second-genre"
           disabled={pageLoading}
           type="Second Genre"
           array={genresArr}
@@ -95,6 +96,7 @@ export default function SignUpGenres() {
         />
 
         <DropDown
+          id="select-box-third-genre"
           disabled={pageLoading}
           type="Third Genre"
           array={genresArr}
@@ -102,7 +104,7 @@ export default function SignUpGenres() {
             setSignUpData({ ...signUpData, thirdGenreId: value })
           }
         />
-        <button type="submit" disabled={pageLoading}>
+        <button id="signup-genre-button" type="submit" disabled={pageLoading}>
           {pageLoading ? (
             <TailSpin
               width="40"

@@ -6,7 +6,6 @@ import React from "react";
 import { SignUpContext } from "../../contexts/SignUpContext";
 
 import AnixLogo from "../../assets/AnixLogo.png";
-import "antd/dist/antd.css";
 import __styledVariables from "../../global/StyledVariables";
 import DropDown from "../../components/DropDown";
 import signUpService from "../../services/signUpService";
@@ -43,7 +42,7 @@ export default function SignUpInfos() {
         setGendersArr(promise);
       } catch (e) {
         console.log(
-          "Somenthing Went Wrong on TryCatch Block (DropDown.jsx [12])"
+          "Something Went Wrong on TryCatch Block (DropDown.jsx [12])"
         );
         setPageLoading(false);
       }
@@ -68,7 +67,7 @@ export default function SignUpInfos() {
       <img src={AnixLogo} alt="AnixLogo" />
       <Form onSubmit={handleForm}>
         <input
-          id="singUpUsername"
+          id="signup-username"
           type="text"
           placeholder="Username"
           autoComplete="true"
@@ -78,7 +77,7 @@ export default function SignUpInfos() {
           required
         />
         <input
-          id="signUpImage"
+          id="signup-image"
           type="url"
           placeholder="Image Link"
           autoComplete="true"
@@ -88,6 +87,7 @@ export default function SignUpInfos() {
           required
         />
         <DropDown
+          id="select-box-infos"
           disabled={pageLoading}
           type="Gender"
           array={gendersArr}
@@ -95,7 +95,7 @@ export default function SignUpInfos() {
             setSignUpData({ ...signUpData, genderId: value })
           }
         />
-        <button disabled={pageLoading}>
+        <button id="signup-info-button" disabled={pageLoading}>
           {pageLoading ? (
             <TailSpin
               width="40"

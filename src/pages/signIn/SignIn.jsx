@@ -1,7 +1,8 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { RiEye2Line, RiEyeCloseFill } from "react-icons/ri";
+import jwt_decode from "jwt-decode";
 
 import AnixLogo from "../../assets/AnixLogo.png";
 import __styledVariables from "../../global/StyledVariables";
@@ -12,7 +13,11 @@ import { AuthContext } from "../../contexts/AuthContext";
 export default function SignIn() {
   const navigate = useNavigate();
 
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth, auth } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (auth.id) navigate("/home");
+  }, [auth, navigate]);
 
   const [signInData, setSignInData] = useState({
     email: "",
@@ -31,11 +36,13 @@ export default function SignIn() {
   async function handleForm(e) {
     e.preventDefault();
     setValidations({ ...validations, password: true });
+
     try {
       const token = await signUpService.createTokenAndLogin(signInData);
       setValidations({ ...validations, password: false });
-      setAuth(token);
       localStorage.setItem("auth", token);
+      const userInfos = token ? jwt_decode(token) : null;
+      setAuth({ ...userInfos, token });
       navigate("/home");
     } catch (e) {
       if (e.response.status === 401) {
@@ -78,11 +85,10 @@ export default function SignIn() {
       <img src={AnixLogo} alt="AnixLogo" />
       <Form onSubmit={handleForm}>
         <input
-          id="signUpEmail"
+          id="signin-email"
           type="email"
           placeholder="Email"
           autoComplete="true"
-          onErrorCapture={console.log("erro")}
           value={signInData.email}
           onChange={(e) => handleInput(e, "email")}
           disabled={pageLoading}
@@ -90,7 +96,7 @@ export default function SignIn() {
         />
         <PaswordInputDiv>
           <input
-            id="signUpPassword"
+            id="signin-password"
             type={showPassword.password ? "text" : "password"}
             placeholder="Password"
             autoComplete="true"
@@ -118,12 +124,12 @@ export default function SignIn() {
             />
           )}
         </PaswordInputDiv>
-        <button type="submit" disabled={pageLoading}>
+        <button id="signin-button" type="submit" disabled={pageLoading}>
           {pageLoading ? "Loading..." : "login"}
         </button>
       </Form>
 
-      <p onClick={() => navigate("/signup")}>
+      <p id="navigate-signup" onClick={() => navigate("/signup")}>
         Are you lost? Click here to sign up!
       </p>
     </SignInCredentialsMain>

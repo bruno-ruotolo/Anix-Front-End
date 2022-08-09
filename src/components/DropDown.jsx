@@ -7,7 +7,7 @@ import Select from "@mui/material/Select";
 import styled from "styled-components";
 import __styledVariables from "../global/StyledVariables";
 
-export default function DropDown({ type, array, setCallBack, disabled }) {
+export default function DropDown({ type, array, setCallBack, disabled, id }) {
   const [value, setValue] = useState();
   const [genreSelect, setGenreSelect] = useState(false);
   const handleChange = (event) => {
@@ -16,6 +16,7 @@ export default function DropDown({ type, array, setCallBack, disabled }) {
 
   return (
     <Box
+      id={id}
       sx={{ minWidth: "85%", height: 55, marginBottom: 3 }}
       onMouseDown={() => setGenreSelect(!genreSelect)}
     >
