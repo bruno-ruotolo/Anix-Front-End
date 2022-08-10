@@ -18,3 +18,20 @@ Cypress.Commands.add("createUser", (userInformations, userFavoriteGenres) => {
     cy.log("User Created");
   });
 });
+
+Cypress.Commands.add("loginUser", (userInformations, URI) => {
+  cy.log("Login User");
+  cy.visit(`${URI}/`);
+  cy.get("#signin-email").type(userInformations.email);
+  cy.get("#signin-password").type(userInformations.password);
+
+  cy.intercept("POST", "/").as("loginUser");
+  cy.intercept("GET", "/home/foryou").as("getForYou");
+  cy.intercept("GET", "/home/season").as("getSeason");
+  cy.intercept("GET", "/home/popular").as("getPopular");
+  cy.get("#signin-button").click();
+  cy.wait("@loginUser");
+  cy.wait("@getForYou");
+  cy.wait("@getSeason");
+  cy.wait("@getPopular");
+});

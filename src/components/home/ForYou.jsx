@@ -16,7 +16,7 @@ export default function ForYou() {
     description: "",
     episodes: "",
   });
-  const { image, title, description, episodes } = forYouAnime;
+  const { image, title, description, episodes, id } = forYouAnime;
 
   useEffect(() => {
     (async () => {
@@ -55,10 +55,13 @@ export default function ForYou() {
   return (
     <ForYouWrapper>
       <h1>For You</h1>
-      <ForYouInfosDiv>
+      <ForYouInfosDiv
+        id="for-you-anime"
+        onClick={() => navigate(`/anime:${id}`)}
+      >
         <img src={image} alt="Anime" />
         <AnimeTextInfosDiv>
-          <h2>{title}</h2>
+          <h2>{title.split(" ").slice(0, 8).join(" ")}</h2>
           <h3>Episodes: {episodes}</h3>
           <p>{description.slice(0, 200)}...</p>
         </AnimeTextInfosDiv>
@@ -67,7 +70,7 @@ export default function ForYou() {
   );
 }
 
-const ForYouWrapper = styled.main`
+const ForYouWrapper = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -91,12 +94,18 @@ const ForYouInfosDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 
   img {
     border-radius: 6px;
     object-fit: cover;
     min-width: 148px;
     height: 195px;
+    transition: 0.5s;
+
+    &:hover {
+      filter: brightness(0.7);
+    }
   }
 `;
 
@@ -113,6 +122,8 @@ const AnimeTextInfosDiv = styled.div`
     font-weight: 400;
     font-size: 16px;
     line-height: 18px;
+    margin-left: 15px;
+    text-align: justify;
     color: ${__styledVariables.inputMainColor};
   }
 

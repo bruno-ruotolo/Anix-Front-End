@@ -6,7 +6,6 @@ import { AuthContext } from "../contexts/AuthContext";
 
 export default function Header() {
   const { auth } = useContext(AuthContext);
-  console.log("🚀 ~ file: Header.jsx ~ line 9 ~ Header ~ auth", auth);
 
   return (
     <HeaderWrapper>
@@ -27,6 +26,7 @@ const HeaderWrapper = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 0 8px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
   .user-image {
     min-height: 59px;
@@ -39,6 +39,7 @@ const HeaderWrapper = styled.header`
   img {
     width: 58px;
     border-radius: 50%;
+    cursor: pointer;
   }
 
   input {

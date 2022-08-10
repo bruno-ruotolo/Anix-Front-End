@@ -2,7 +2,6 @@
 /* eslint-disable no-undef */
 
 import { faker } from "@faker-js/faker";
-import { click } from "@testing-library/user-event/dist/click";
 
 const URI = "http://localhost:3000";
 
@@ -98,16 +97,22 @@ describe("Login User Test Suite", () => {
       thirdGenreId: Math.ceil(Math.random() * GENRE_QUANTITY),
     };
 
+    cy.visit(`${URI}/`);
+
     cy.createUser(userInformations, userFavoriteGenres);
 
     cy.get("#signin-email").type(userInformations.email);
     cy.get("#signin-password").type(userInformations.password);
 
     cy.intercept("POST", "/").as("loginUser");
-    cy.intercept("GET", "/home/foryou").as("getHome");
+    cy.intercept("GET", "/home/foryou").as("getForYou");
+    cy.intercept("GET", "/home/season").as("getSeason");
+    cy.intercept("GET", "/home/popular").as("getPopular");
     cy.get("#signin-button").click();
     cy.wait("@loginUser");
-    cy.wait("@getHome");
+    cy.wait("@getForYou");
+    cy.wait("@getSeason");
+    cy.wait("@getPopular");
 
     cy.url().should("equal", `${URI}/home`);
   });
