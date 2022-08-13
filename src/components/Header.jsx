@@ -21,6 +21,7 @@ const HeaderWrapper = styled.header`
   height: 77px;
   width: 100vw;
   position: sticky;
+  z-index: 10;
   top: 0;
   display: flex;
   align-items: center;

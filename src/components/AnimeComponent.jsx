@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-export default function AnimeComponent({ image, title, key }) {
+export default function AnimeComponent({ image, title, id }) {
   const navigate = useNavigate();
 
   return (
-    <SeasonAnimeWrapper onClick={() => navigate(`anime/${key}`)}>
+    <AnimeWrapper onClick={() => navigate(`/anime/${id}`)}>
       <img src={image} alt={title} />
-    </SeasonAnimeWrapper>
+    </AnimeWrapper>
   );
 }
 
-const SeasonAnimeWrapper = styled.section`
+const AnimeWrapper = styled.section`
   width: fit-content;
   margin-right: 18px;
   cursor: pointer;
@@ -20,6 +20,7 @@ const SeasonAnimeWrapper = styled.section`
     width: 98px;
     height: 130px;
     border-radius: 6px;
+    object-fit: cover;
   }
 
   &:hover {

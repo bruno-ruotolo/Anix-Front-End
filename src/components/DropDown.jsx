@@ -7,21 +7,32 @@ import Select from "@mui/material/Select";
 import styled from "styled-components";
 import __styledVariables from "../global/StyledVariables";
 
-export default function DropDown({ type, array, setCallBack, disabled, id }) {
-  const [value, setValue] = useState();
-  const [genreSelect, setGenreSelect] = useState(false);
+export default function DropDown({
+  type,
+  array,
+  setCallBack,
+  disabled,
+  id,
+  width = "85%",
+  height = 55,
+  statusId,
+}) {
+  const [value, setValue] = useState(statusId);
+  const [select, setSelect] = useState(false);
+
   const handleChange = (event) => {
     setCallBack(event.target.value);
+    setValue(event.target.value);
   };
 
   return (
     <Box
       id={id}
-      sx={{ minWidth: "85%", height: 55, marginBottom: 3 }}
-      onMouseDown={() => setGenreSelect(!genreSelect)}
+      sx={{ minWidth: "85%", marginBottom: 3 }}
+      onMouseDown={() => setSelect(!select)}
     >
       <GenderInputDiv>
-        <FormControl variant="filled" fullWidth>
+        <FormControl id={`${id}-form`} variant="filled" fullWidth>
           <InputLabel id="demo-simple-select-label">{type}</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -30,7 +41,6 @@ export default function DropDown({ type, array, setCallBack, disabled, id }) {
             disabled={disabled}
             label={type}
             onChange={handleChange}
-            styles={{ backgroundColor: "red" }}
           >
             {array?.map((genre) => {
               const { id, name } = genre;
@@ -54,6 +64,7 @@ const GenderInputDiv = styled.div`
   #demo-simple-select {
     box-sizing: border-box;
     display: flex;
+
     align-items: center;
     background-color: ${__styledVariables.inputMainColor};
     border-radius: 10px;

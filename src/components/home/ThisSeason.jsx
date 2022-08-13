@@ -9,7 +9,7 @@ import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import __styledVariables from "../../global/StyledVariables";
 
 import homeService from "../../services/homeService";
-import AnimeComponent from "./AnimeComponent";
+import AnimeComponent from "../AnimeComponent";
 
 export default function ThisSeason() {
   const { auth } = useContext(AuthContext);
@@ -72,7 +72,9 @@ export default function ThisSeason() {
       <SeasonAnimes ref={ref}>
         {seasonAnime.map((anime) => {
           const { id, image, title } = anime;
-          return <AnimeComponent key={id} image={image} title={title} />;
+          return (
+            <AnimeComponent key={id} image={image} id={id} title={title} />
+          );
         })}
 
         <FaArrowAltCircleRight

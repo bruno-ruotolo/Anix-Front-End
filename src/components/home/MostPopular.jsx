@@ -3,13 +3,12 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../contexts/AuthContext";
-import { BsFillPlusSquareFill } from "react-icons/bs";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 
 import __styledVariables from "../../global/StyledVariables";
 
 import homeService from "../../services/homeService";
-import AnimeComponent from "./AnimeComponent";
+import AnimeComponent from "../AnimeComponent";
 
 export default function MostPopular() {
   const { auth } = useContext(AuthContext);
@@ -65,7 +64,9 @@ export default function MostPopular() {
       <PopularAnimes ref={ref}>
         {popularAnime.map((anime) => {
           const { id, image, title } = anime;
-          return <AnimeComponent key={id} image={image} title={title} />;
+          return (
+            <AnimeComponent key={id} image={image} title={title} id={id} />
+          );
         })}
 
         <FaArrowAltCircleRight

@@ -57,7 +57,7 @@ export default function ForYou() {
       <h1>For You</h1>
       <ForYouInfosDiv
         id="for-you-anime"
-        onClick={() => navigate(`/anime:${id}`)}
+        onClick={() => navigate(`/anime/${id}`)}
       >
         <img src={image} alt="Anime" />
         <AnimeTextInfosDiv>
