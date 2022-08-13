@@ -16,6 +16,7 @@ const AnimeWrapper = styled.section`
   margin-right: 18px;
   cursor: pointer;
   transition: 0.5s;
+
   img {
     width: 98px;
     height: 130px;

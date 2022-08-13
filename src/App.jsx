@@ -12,6 +12,7 @@ import Home from "./pages/home/Home";
 import Anime from "./pages/anime/Anime";
 import UserStatusAnime from "./pages/userStatusAnime/UserStatusAnime";
 import Profile from "./pages/profile/Profile";
+import Season from "./pages/season/Season";
 
 export default function App() {
   return (
@@ -56,6 +57,15 @@ export default function App() {
               element={
                 <PrivateRoute>
                   <Profile />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/season"
+              element={
+                <PrivateRoute>
+                  <Season />
                 </PrivateRoute>
               }
             />

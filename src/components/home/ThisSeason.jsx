@@ -139,6 +139,7 @@ const SeasonAnimes = styled.div`
   max-width: 328px;
   align-items: center;
   margin-top: 10px;
+  transition: 0.5s;
 
   overflow: scroll;
 
