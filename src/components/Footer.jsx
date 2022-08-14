@@ -16,7 +16,7 @@ export default function Footer({ position }) {
     <FooterWrapper position={position}>
       <RiSearchEyeFill
         className="browserFooter"
-        onClick={() => navigate("/browser")}
+        onClick={() => navigate("/search")}
       />
       <BsDisplayFill
         className="userAnimeFooter"

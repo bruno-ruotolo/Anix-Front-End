@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../contexts/AuthContext";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
+import Scroll from "react-scroll";
 
 import __styledVariables from "../../global/StyledVariables";
 
@@ -11,13 +12,12 @@ import homeService from "../../services/homeService";
 import AnimeComponent from "../AnimeComponent";
 
 export default function MostPopular() {
+  const Element = Scroll.Element;
+  const scroll = Scroll.animateScroll;
+
   const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
   const ref = useRef(null);
-
-  const scroll = (scrollOffset) => {
-    ref.current.scrollLeft += scrollOffset;
-  };
 
   const [popularAnime, setPopularAnime] = useState([]);
 
@@ -55,14 +55,24 @@ export default function MostPopular() {
     })();
   }, [auth.token, navigate]);
 
+  function handleScroll(direction) {
+    scroll.scrollMore(direction ? 347 : -347, {
+      duration: 700,
+      delay: 0,
+      smooth: true,
+      containerId: "most-popular-animes-list",
+      horizontal: true,
+    });
+  }
+
   return (
     <PopularWrapper>
       <hr />
       <PopularTitleDiv>
         <h1>Most Popular</h1>
       </PopularTitleDiv>
-      <PopularAnimes ref={ref}>
-        {popularAnime.map((anime) => {
+      <PopularAnimes id={"most-popular-animes-list"} ref={ref}>
+        {popularAnime.map((anime, index) => {
           const { id, image, title } = anime;
           return (
             <AnimeComponent key={id} image={image} title={title} id={id} />
@@ -71,12 +81,12 @@ export default function MostPopular() {
 
         <FaArrowAltCircleRight
           className="scrollArrowRight"
-          onClick={() => scroll(330)}
+          onClick={() => handleScroll(true)}
         />
 
         <FaArrowAltCircleLeft
           className="scrollArrowLeft"
-          onClick={() => scroll(-330)}
+          onClick={() => handleScroll(false)}
         />
       </PopularAnimes>
     </PopularWrapper>
@@ -136,7 +146,7 @@ const PopularAnimes = styled.div`
     cursor: pointer;
     position: absolute;
     right: 30px;
-    filter: opacity(0.8);
+    filter: drop-shadow(0px 0px 5px black);
     color: ${__styledVariables.buttonFontColor};
     font-size: 25px;
     overflow: scroll;
@@ -146,8 +156,9 @@ const PopularAnimes = styled.div`
     cursor: pointer;
     position: absolute;
     left: 30px;
-    filter: opacity(0.8);
+    filter: drop-shadow(0px 0px 5px black);
     color: ${__styledVariables.buttonFontColor};
+
     font-size: 25px;
     overflow: scroll;
   }

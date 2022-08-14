@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../contexts/AuthContext";
 import { BsFillPlusSquareFill } from "react-icons/bs";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
+import Scroll from "react-scroll";
 
 import __styledVariables from "../../global/StyledVariables";
 
@@ -12,13 +13,11 @@ import homeService from "../../services/homeService";
 import AnimeComponent from "../AnimeComponent";
 
 export default function ThisSeason() {
+  const scroll = Scroll.animateScroll;
+
   const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
   const ref = useRef(null);
-
-  const scroll = (scrollOffset) => {
-    ref.current.scrollLeft += scrollOffset;
-  };
 
   const [seasonAnime, setSeasonAnime] = useState([]);
 
@@ -56,6 +55,16 @@ export default function ThisSeason() {
     })();
   }, [auth.token, navigate]);
 
+  function handleScroll(direction) {
+    scroll.scrollMore(direction ? 347 : -347, {
+      duration: 700,
+      delay: 0,
+      smooth: true,
+      containerId: "season-animes-list",
+      horizontal: true,
+    });
+  }
+
   return (
     <SeasonWrapper>
       <hr />
@@ -69,8 +78,8 @@ export default function ThisSeason() {
           }}
         />
       </SeasonTitleDiv>
-      <SeasonAnimes ref={ref}>
-        {seasonAnime.map((anime) => {
+      <SeasonAnimes id="season-animes-list" ref={ref}>
+        {seasonAnime.map((anime, index) => {
           const { id, image, title } = anime;
           return (
             <AnimeComponent key={id} image={image} id={id} title={title} />
@@ -80,12 +89,12 @@ export default function ThisSeason() {
         <FaArrowAltCircleRight
           id="scroll-arrow-right"
           className="scrollArrowRight"
-          onClick={() => scroll(330)}
+          onClick={() => handleScroll(true)}
         />
 
         <FaArrowAltCircleLeft
           className="scrollArrowLeft"
-          onClick={() => scroll(-330)}
+          onClick={() => handleScroll(false)}
         />
       </SeasonAnimes>
     </SeasonWrapper>
@@ -147,20 +156,20 @@ const SeasonAnimes = styled.div`
     cursor: pointer;
     position: absolute;
     right: 30px;
-    filter: opacity(0.8);
     color: ${__styledVariables.buttonFontColor};
     font-size: 25px;
     overflow: scroll;
+    filter: drop-shadow(0px 0px 5px black);
   }
 
   .scrollArrowLeft {
     cursor: pointer;
     position: absolute;
     left: 30px;
-    filter: opacity(0.8);
     color: ${__styledVariables.buttonFontColor};
     font-size: 25px;
     overflow: scroll;
+    filter: drop-shadow(0px 0px 5px black);
   }
 
   &::-webkit-scrollbar {

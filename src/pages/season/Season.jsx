@@ -14,10 +14,6 @@ export default function Season() {
   const navigate = useNavigate();
 
   const [seasonAnimes, setSeasonAnimes] = useState([]);
-  console.log(
-    "🚀 ~ file: Profile.jsx ~ line 16 ~ Profile ~ profileInfos",
-    seasonAnimes
-  );
 
   useEffect(() => {
     (async () => {

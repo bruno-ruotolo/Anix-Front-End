@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import AnimeComponent from "../../components/AnimeComponent";
+import { FiLogOut } from "react-icons/fi";
 
 import Footer from "../../components/Footer";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -10,14 +11,10 @@ import __styledVariables from "../../global/StyledVariables";
 import profileService from "../../services/profileService";
 
 export default function Profile() {
-  const { auth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [profileInfos, setProfileInfos] = useState(false);
-  console.log(
-    "🚀 ~ file: Profile.jsx ~ line 16 ~ Profile ~ profileInfos",
-    profileInfos
-  );
 
   useEffect(() => {
     (async () => {
@@ -57,9 +54,16 @@ export default function Profile() {
     })();
   }, [navigate, auth.token, auth.id]);
 
+  function handleLogout() {
+    localStorage.clear();
+    setAuth("");
+    navigate("/");
+  }
+
   return profileInfos ? (
     <>
       <ProfileWrapper>
+        <FiLogOut className="logout-icon" onClick={handleLogout} />
         <UserInfos>
           <img src={profileInfos.image} alt="Profile" />
           <h2>{profileInfos.username}</h2>
@@ -88,10 +92,12 @@ export default function Profile() {
           <FavoriteAnimes>
             {profileInfos.UserFavoriteAnime?.map((anime) => {
               const {
-                id,
+                animeId,
                 anime: { image },
               } = anime;
-              return <AnimeComponent key={id} id={id} image={image} />;
+              return (
+                <AnimeComponent key={animeId} id={animeId} image={image} />
+              );
             })}
           </FavoriteAnimes>
         </ProfileAnimeInfosContainer>
@@ -130,6 +136,15 @@ const ProfileWrapper = styled.main`
     line-height: 27px;
     color: ${__styledVariables.buttonFontColor};
     margin-top: 60px;
+  }
+
+  .logout-icon {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    font-size: 30px;
+    color: ${__styledVariables.buttonFontColor};
+    filter: drop-shadow(4px 4px 2px #000000);
   }
 `;
 
