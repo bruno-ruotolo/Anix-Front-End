@@ -197,6 +197,7 @@ const SignInCredentialsMain = styled.main`
 const Form = styled.form`
   max-width: 600px;
   bottom: 150px;
+  position: absolute;
 
   button {
     position: relative;
