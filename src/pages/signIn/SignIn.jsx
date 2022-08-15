@@ -198,7 +198,8 @@ const Form = styled.form`
   max-width: 600px;
   bottom: 150px;
   position: absolute;
-
+  left: 50%;
+  transform: translate(-50%, 0);
   button {
     position: relative;
     min-width: 258px;
