@@ -25,6 +25,7 @@ const SelectItemWrapper = styled.div`
   width: 100%;
   font-size: 18px;
   margin-top: 10px;
+  cursor: pointer;
 
   &::after {
     content: "";
@@ -37,6 +38,6 @@ const SelectItemWrapper = styled.div`
 
   &:hover,
   &:active {
-    background-color: #00000043;
+    background-color: #ef929243;
   }
 `;

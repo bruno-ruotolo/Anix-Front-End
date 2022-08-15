@@ -61,9 +61,15 @@ export default function ForYou() {
       >
         <img src={image} alt="Anime" />
         <AnimeTextInfosDiv>
-          <h2>{title.split(" ").slice(0, 8).join(" ")}</h2>
+          <h2 className="title-mobile">
+            {title.split(" ").slice(0, 8).join(" ")}
+          </h2>
+          <h2 className="title-desktop">
+            {title.split(" ").slice(0, 20).join(" ")}
+          </h2>
           <h3>Episodes: {episodes}</h3>
-          <p>{description.slice(0, 200)}...</p>
+          <p className="description-mobile">{description.slice(0, 200)}...</p>
+          <p className="description-desktop">{description.slice(0, 900)}...</p>
         </AnimeTextInfosDiv>
       </ForYouInfosDiv>
     </ForYouWrapper>
@@ -88,6 +94,18 @@ const ForYouWrapper = styled.section`
     line-height: 27px;
     color: ${__styledVariables.inputMainColor};
   }
+
+  @media (min-width: 800px) {
+    flex-wrap: wrap;
+    left: 50%;
+    transform: translate(50%, 0);
+    margin-top: 30px;
+
+    h1 {
+      font-size: 33px;
+      margin-bottom: 25px;
+    }
+  }
 `;
 
 const ForYouInfosDiv = styled.div`
@@ -105,6 +123,13 @@ const ForYouInfosDiv = styled.div`
 
     &:hover {
       filter: brightness(0.7);
+    }
+  }
+
+  @media (min-width: 800px) {
+    img {
+      min-width: 210px;
+      height: 277px;
     }
   }
 `;
@@ -146,5 +171,43 @@ const AnimeTextInfosDiv = styled.div`
     line-height: 13px;
     color: ${__styledVariables.inputMainColor};
     text-align: justify;
+  }
+  @media (max-width: 800px) {
+    .title-desktop {
+      display: none;
+    }
+
+    .description-desktop {
+      display: none;
+    }
+  }
+
+  @media (min-width: 800px) {
+    height: 250px;
+
+    .description-mobile {
+      display: none;
+    }
+
+    .title-mobile {
+      display: none;
+    }
+
+    .title-desktop {
+      line-height: 28px;
+    }
+
+    .description-desktop {
+      font-size: 15px;
+      line-height: 17px;
+    }
+
+    h2 {
+      font-size: 25px;
+    }
+
+    h3 {
+      font-size: 18px;
+    }
   }
 `;

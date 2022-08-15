@@ -56,8 +56,8 @@ export default function MostPopular() {
   }, [auth.token, navigate]);
 
   function handleScroll(direction) {
-    scroll.scrollMore(direction ? 347 : -347, {
-      duration: 700,
+    scroll.scrollMore(direction ? 700 : -700, {
+      duration: 900,
       delay: 0,
       smooth: true,
       containerId: "most-popular-animes-list",
@@ -80,12 +80,12 @@ export default function MostPopular() {
         })}
 
         <FaArrowAltCircleRight
-          className="scrollArrowRight"
+          className="scroll-arrow-right-class"
           onClick={() => handleScroll(true)}
         />
 
         <FaArrowAltCircleLeft
-          className="scrollArrowLeft"
+          className="scroll-arrow-left-class"
           onClick={() => handleScroll(false)}
         />
       </PopularAnimes>
@@ -101,11 +101,15 @@ const PopularWrapper = styled.section`
 
   margin-top: 20px;
   padding: 0 23px;
-  max-width: 1000px;
 
   hr {
     width: 100%;
     margin-bottom: 20px;
+  }
+
+  @media (min-width: 800px) {
+    padding: 0 100px;
+    width: 100%;
   }
 `;
 
@@ -132,6 +136,12 @@ const PopularTitleDiv = styled.div`
     line-height: 27px;
     color: ${__styledVariables.inputMainColor};
   }
+
+  @media (min-width: 800px) {
+    h1 {
+      font-size: 30px;
+    }
+  }
 `;
 
 const PopularAnimes = styled.div`
@@ -142,7 +152,7 @@ const PopularAnimes = styled.div`
 
   overflow: scroll;
 
-  .scrollArrowRight {
+  .scroll-arrow-right-class {
     cursor: pointer;
     position: absolute;
     right: 30px;
@@ -152,7 +162,7 @@ const PopularAnimes = styled.div`
     overflow: scroll;
   }
 
-  .scrollArrowLeft {
+  .scroll-arrow-left-class {
     cursor: pointer;
     position: absolute;
     left: 30px;
@@ -165,5 +175,23 @@ const PopularAnimes = styled.div`
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (min-width: 800px) {
+    max-width: 100%;
+
+    h1 {
+      font-size: 30px;
+    }
+
+    .scroll-arrow-left-class {
+      font-size: 35px;
+      left: 50px;
+    }
+
+    .scroll-arrow-right-class {
+      font-size: 35px;
+      right: 50px;
+    }
   }
 `;

@@ -20,5 +20,12 @@ const IconWrapper = styled.div`
   .moon-rate {
     font-size: 22px;
     margin-right: 12px;
+    cursor: pointer;
+  }
+
+  @media (min-width: 800px) {
+    .moon-rate {
+      font-size: 32px;
+    }
   }
 `;

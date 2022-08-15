@@ -38,10 +38,7 @@ export default function SelectBox({
       >
         <InputDiv height={height}>
           {isActive ? (
-            <FaSearch
-              onClick={() => setIsActive(false)}
-              className="search-icon"
-            />
+            <FaSearch className="search-icon" />
           ) : (
             <IoMdArrowDropdown
               onClick={() => setIsActive(true)}
@@ -86,12 +83,20 @@ const SelectWrapper = styled.section`
   width: fit-content;
   position: relative;
   height: fit-content;
+
+  @media (max-width: 800px) {
+    max-width: 200px;
+  }
 `;
 
 const Form = styled.form`
   width: ${({ width }) => (width ? width : "200px")};
   height: fit-content;
   position: relative;
+
+  @media (max-width: 800px) {
+    max-width: 200px;
+  }
 `;
 
 const SelectList = styled.div`
@@ -107,10 +112,14 @@ const SelectList = styled.div`
   padding: 0 10px;
   max-height: 400px;
   overflow: scroll;
+
+  @media (max-width: 800px) {
+    max-width: 200px;
+  }
 `;
 
 const InputDiv = styled.div`
-  width: fit-content;
+  width: 100%;
   display: flex;
   align-items: center;
 
@@ -136,8 +145,22 @@ const InputDiv = styled.div`
     margin-bottom: 2px;
     padding-right: 0;
 
+    @media (max-width: 800px) {
+      max-width: 200px;
+    }
+
     &::placeholder {
       font-size: 18px;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
     }
   }
 `;

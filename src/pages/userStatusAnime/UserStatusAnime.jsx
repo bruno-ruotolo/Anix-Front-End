@@ -9,6 +9,7 @@ import userStatusAnime from "../../services/userStatusAnimes";
 import Footer from "../../components/Footer";
 import UserAnimesHeader from "../../components/userAnimes/UserAnimesHeader";
 import AnimeComponent from "../../components/AnimeComponent";
+import Header from "../../components/Header";
 
 export default function UserStatusAnime() {
   const { auth } = useContext(AuthContext);
@@ -62,12 +63,18 @@ export default function UserStatusAnime() {
 
   return animes.length > 0 ? (
     <>
+      <Header />
       <UserAnimesHeader
         setSearchParams={(value) => setSearchParams(value)}
         queryString={queryString}
       />
       <UserAnimesWrapper>
-        <h2> {animes.length} Animes Found</h2>
+        <h2>
+          {" "}
+          {animes.length > 1
+            ? `${animes.length} Animes Found`
+            : `${animes.length} Anime Found`}
+        </h2>
         <AnimesContainer>
           {animes.map((anime) => {
             const {
@@ -111,6 +118,15 @@ const UserAnimesWrapper = styled.main`
     line-height: 22px;
     color: ${__styledVariables.buttonFontColor};
   }
+
+  @media (min-width: 800px) {
+    padding-top: 40px;
+    min-height: calc(100vh - 139px);
+    h2 {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+  }
 `;
 
 const AnimesContainer = styled.section`
@@ -126,5 +142,13 @@ const AnimesContainer = styled.section`
 
   img {
     margin-bottom: 15px;
+  }
+  @media (min-width: 800px) {
+    padding: 25px 60px 0 60px;
+    justify-content: space-evenly;
+
+    img {
+      margin-bottom: 25px;
+    }
   }
 `;

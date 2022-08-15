@@ -8,6 +8,7 @@ import Footer from "../../components/Footer";
 import { AuthContext } from "../../contexts/AuthContext";
 import __styledVariables from "../../global/StyledVariables";
 import homeService from "../../services/homeService";
+import Header from "../../components/Header";
 
 export default function Season() {
   const { auth } = useContext(AuthContext);
@@ -52,6 +53,7 @@ export default function Season() {
 
   return seasonAnimes.length > 0 ? (
     <>
+      <Header />
       <SeasonWrapper>
         <h2>Summer 2022</h2>
         <SeasonListContainer>
@@ -98,6 +100,13 @@ const SeasonWrapper = styled.main`
     text-align: center;
     color: ${__styledVariables.buttonFontColor};
   }
+
+  @media (min-width: 800px) {
+    min-height: calc(100vh - 77px);
+    h2 {
+      font-size: 50px;
+    }
+  }
 `;
 
 const SeasonListContainer = styled.section`
@@ -114,5 +123,14 @@ const SeasonListContainer = styled.section`
 
   img {
     margin-bottom: 15px;
+  }
+
+  @media (min-width: 800px) {
+    padding: 45px 60px 0 60px;
+    justify-content: space-evenly;
+
+    img {
+      margin-bottom: 25px;
+    }
   }
 `;

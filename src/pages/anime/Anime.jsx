@@ -10,6 +10,7 @@ import animeService from "../../services/animeService";
 import DropDown from "../../components/DropDown";
 import RateButton from "../../components/anime/RateButton";
 import FavoriteButton from "../../components/anime/FavoriteButton";
+import Header from "../../components/Header";
 
 export default function Anime() {
   const { auth } = useContext(AuthContext);
@@ -169,6 +170,7 @@ export default function Anime() {
   }
   return animeInfos ? (
     <>
+      <Header />
       <AnimeWrapper>
         <Footer position={"top"} />
         <AnimeStatusFavoriteRate>
@@ -200,29 +202,38 @@ export default function Anime() {
             </YourRateDiv>
             <DropDown
               id="#select-box-status"
+              width="200px"
               type="Status"
               array={statusArr}
               setCallBack={(value) => handleStatus(value)}
               statusId={currentStatus}
             />
+            <p className="description-desktop">{animeInfos.description}</p>
           </AnimeMainInfos>
         </AnimeStatusFavoriteRate>
-        <AnimeOutherInfos>
-          <p>{animeInfos.description}</p>
-          <h4>Episodes</h4>
-          <h5>{animeInfos.episodes}</h5>
-          <h4>Genres</h4>
+        <AnimeOtherInfos>
+          <p className="description-mobile">{animeInfos.description}</p>
+          <EpisodesDiv>
+            <h4>Episodes</h4>
+            <h5>{animeInfos.episodes}</h5>
+          </EpisodesDiv>
+
           <GenresDiv>
-            {animeInfos.animesGenres?.map(({ genre }) => {
-              const { name, id } = genre;
-              return <h5 key={id}>{name}</h5>;
-            })}
+            <h4>Genres</h4>
+            <Genres>
+              {animeInfos.animesGenres?.map(({ genre }) => {
+                const { name, id } = genre;
+                return <h5 key={id}>{name}</h5>;
+              })}
+            </Genres>
           </GenresDiv>
-          <h4>Aired</h4>
-          <h5>
-            {animeInfos.season.name} {animeInfos.year.year}
-          </h5>
-        </AnimeOutherInfos>
+          <AiredDiv>
+            <h4>Aired</h4>
+            <h5>
+              {animeInfos.season.name} {animeInfos.year.year}
+            </h5>
+          </AiredDiv>
+        </AnimeOtherInfos>
       </AnimeWrapper>
     </>
   ) : (
@@ -247,16 +258,49 @@ const AnimeWrapper = styled.main`
     #594d7d
   );
 
-  #select-box-status {
-    width: 50px;
+  #demo-simple-select {
+    height: 51px;
   }
 
   .MuiFormControl-root {
-    width: 182;
+    width: 100%;
   }
 
-  #demo-simple-select {
-    height: 51px;
+  p {
+    font-family: ${__styledVariables.mainFont};
+    font-style: normal;
+    text-align: justify;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 15px;
+    color: ${__styledVariables.buttonFontColor};
+  }
+
+  @media (min-width: 800px) {
+    min-height: calc(100vh - 77px);
+    top: 77px;
+    padding: 20px 40px 20px 40px;
+
+    .MuiFormControl-root {
+      width: 500px;
+      margin-top: 30px;
+    }
+
+    p {
+      font-size: 20px;
+      line-height: 22px;
+      margin-top: 30px;
+    }
+
+    .description-mobile {
+      display: none;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .description-desktop {
+      display: none;
+    }
   }
 `;
 
@@ -267,6 +311,13 @@ const AnimeStatusFavoriteRate = styled.section`
     width: 155px;
     height: 212px;
     border-radius: 10px;
+  }
+
+  @media (min-width: 800px) {
+    img {
+      width: 292px;
+      height: 399px;
+    }
   }
 `;
 
@@ -283,6 +334,16 @@ const AnimeMainInfos = styled.div`
     font-size: 16px;
     line-height: 18px;
     color: ${__styledVariables.buttonFontColor};
+  }
+
+  @media (min-width: 800px) {
+    margin-left: 40px;
+
+    h2 {
+      text-align: center;
+      font-size: 30px;
+      line-height: 32px;
+    }
   }
 `;
 
@@ -301,13 +362,27 @@ const YourRateDiv = styled.div`
     color: ${__styledVariables.buttonFontColor};
     margin-bottom: 10px;
   }
+
+  @media (min-width: 800px) {
+    h3 {
+      text-align: center;
+      font-size: 25px;
+      margin-top: 35px;
+    }
+  }
 `;
 
 const MoonsRateDiv = styled.div`
   display: flex;
+
+  @media (min-width: 800px) {
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
 `;
 
-const AnimeOutherInfos = styled.div`
+const AnimeOtherInfos = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -343,6 +418,26 @@ const AnimeOutherInfos = styled.div`
     color: #ff94e7;
     margin-top: 5px;
   }
+
+  @media (min-width: 800px) {
+    position: relative;
+    flex-direction: row;
+    justify-content: space-between;
+    left: 50%;
+    transform: translate(-50%, 0);
+    max-width: 1200px;
+    margin-top: 30px;
+
+    h4 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    h5 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+  }
 `;
 
 const GenresDiv = styled.div`
@@ -362,4 +457,30 @@ const GenresDiv = styled.div`
   justify-content: center;
   text-align: center;
   flex-wrap: wrap;
+
+  @media (min-width: 800px) {
+    flex-direction: column;
+
+    max-width: 500px;
+  }
+`;
+
+const EpisodesDiv = styled.div`
+  text-align: center;
+
+  @media (min-width: 800px) {
+    flex-direction: column;
+  }
+`;
+
+const AiredDiv = styled.div`
+  text-align: center;
+`;
+
+const Genres = styled.div`
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 `;

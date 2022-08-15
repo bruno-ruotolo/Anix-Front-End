@@ -65,4 +65,8 @@ const FooterWrapper = styled.footer`
   .profileFooter {
     cursor: pointer;
   }
+
+  @media (min-width: 800px) {
+    display: none;
+  }
 `;

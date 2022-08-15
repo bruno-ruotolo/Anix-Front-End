@@ -42,6 +42,10 @@ const HeaderWrapper = styled.header`
 
   background-color: #8f678b;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+  @media (min-width: 800px) {
+    background-color: #462b43;
+  }
 `;
 
 const Form = styled.form`
@@ -49,4 +53,9 @@ const Form = styled.form`
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
+
+  @media (min-width: 800px) {
+    max-width: 800px;
+    justify-content: space-between;
+  }
 `;

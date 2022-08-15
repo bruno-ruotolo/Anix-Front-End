@@ -27,4 +27,11 @@ const AnimeWrapper = styled.section`
   &:hover {
     filter: brightness(0.7);
   }
+
+  @media (min-width: 800px) {
+    img {
+      width: 147px;
+      height: 194px;
+    }
+  }
 `;

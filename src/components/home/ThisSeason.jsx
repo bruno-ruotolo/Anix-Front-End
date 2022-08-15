@@ -88,12 +88,12 @@ export default function ThisSeason() {
 
         <FaArrowAltCircleRight
           id="scroll-arrow-right"
-          className="scrollArrowRight"
+          className="scroll-arrow-right-class"
           onClick={() => handleScroll(true)}
         />
 
         <FaArrowAltCircleLeft
-          className="scrollArrowLeft"
+          className="scroll-arrow-left-class"
           onClick={() => handleScroll(false)}
         />
       </SeasonAnimes>
@@ -109,11 +109,15 @@ const SeasonWrapper = styled.section`
 
   margin-top: 20px;
   padding: 0 23px;
-  max-width: 1000px;
 
   hr {
     width: 100%;
     margin-bottom: 20px;
+  }
+
+  @media (min-width: 800px) {
+    padding: 0 100px;
+    width: 100%;
   }
 `;
 
@@ -141,6 +145,12 @@ const SeasonTitleDiv = styled.div`
     line-height: 27px;
     color: ${__styledVariables.inputMainColor};
   }
+
+  @media (min-width: 800px) {
+    h1 {
+      font-size: 30px;
+    }
+  }
 `;
 
 const SeasonAnimes = styled.div`
@@ -152,7 +162,7 @@ const SeasonAnimes = styled.div`
 
   overflow: scroll;
 
-  .scrollArrowRight {
+  .scroll-arrow-right-class {
     cursor: pointer;
     position: absolute;
     right: 30px;
@@ -162,7 +172,7 @@ const SeasonAnimes = styled.div`
     filter: drop-shadow(0px 0px 5px black);
   }
 
-  .scrollArrowLeft {
+  .scroll-arrow-left-class {
     cursor: pointer;
     position: absolute;
     left: 30px;
@@ -174,5 +184,23 @@ const SeasonAnimes = styled.div`
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (min-width: 800px) {
+    max-width: 100%;
+
+    h1 {
+      font-size: 30px;
+    }
+
+    .scroll-arrow-left-class {
+      font-size: 35px;
+      left: 50px;
+    }
+
+    .scroll-arrow-right-class {
+      font-size: 35px;
+      right: 50px;
+    }
   }
 `;

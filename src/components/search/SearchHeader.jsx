@@ -88,7 +88,7 @@ export default function SearchHeader({ setSearchParams, searchParams }) {
             else setSearchParams({ y: "" });
           }}
           height="35px"
-          width="120px"
+          width="110px"
           placeholder="Year"
           type="number"
           list={yearsList}
@@ -135,6 +135,10 @@ const HeaderWrapper = styled.header`
     min-height: 0;
     height: 39px;
   }
+
+  @media (min-width: 800px) {
+    background-color: #462b43;
+  }
 `;
 
 const SelectBoxesContainer = styled.div`
@@ -142,4 +146,21 @@ const SelectBoxesContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+
+  @media (min-width: 800px) {
+    max-width: 1000px;
+    section {
+      &:first-child {
+        form {
+          width: 180px;
+        }
+      }
+
+      &:last-child {
+        form {
+          width: 500px;
+        }
+      }
+    }
+  }
 `;

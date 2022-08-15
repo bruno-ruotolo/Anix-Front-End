@@ -9,6 +9,7 @@ import __styledVariables from "../../global/StyledVariables";
 import signUpService from "../../services/signUpService";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../contexts/AuthContext";
+import { TailSpin } from "react-loader-spinner";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -125,7 +126,16 @@ export default function SignIn() {
           )}
         </PaswordInputDiv>
         <button id="signin-button" type="submit" disabled={pageLoading}>
-          {pageLoading ? "Loading..." : "login"}
+          {pageLoading ? (
+            <TailSpin
+              width="40"
+              height="80"
+              radius="2"
+              color={__styledVariables.buttonFontColor}
+            />
+          ) : (
+            "Login"
+          )}
         </button>
       </Form>
 
@@ -138,6 +148,10 @@ export default function SignIn() {
 
 const SignInCredentialsMain = styled.main`
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 100vh;
   width: 100vw;
 
@@ -156,6 +170,7 @@ const SignInCredentialsMain = styled.main`
     bottom: 50px;
     left: 50%;
     transform: translate(-50%, 0);
+    cursor: pointer;
 
     text-align: center;
     font-family: ${__styledVariables.mainFont};
@@ -165,19 +180,38 @@ const SignInCredentialsMain = styled.main`
     font-size: 18px;
     line-height: 20px;
   }
+
+  @media (min-width: 800px) {
+    height: 100vh;
+    p {
+      bottom: 200px;
+    }
+
+    img {
+      top: 100px;
+    }
+  }
 `;
 
 const Form = styled.form`
-  max-width: 1000px;
+  max-width: 600px;
   bottom: 150px;
 
   button {
     position: relative;
     min-width: 258px;
     width: 65%;
-    max-width: 500px;
+    max-width: 200px;
     height: 54px;
     margin-top: 30px;
+    cursor: pointer;
+  }
+
+  @media (min-width: 800px) {
+    bottom: 300px;
+    button {
+      min-width: 258px;
+    }
   }
 `;
 
@@ -191,6 +225,7 @@ const PaswordInputDiv = styled.div`
     position: absolute;
     right: 8px;
     top: 18px;
+    cursor: pointer;
 
     font-size: 22px;
   }

@@ -17,7 +17,7 @@ export default function DropDown({
   height = 55,
   statusId,
 }) {
-  const [value, setValue] = useState(statusId);
+  const [value, setValue] = useState(statusId || "");
   const [select, setSelect] = useState(false);
 
   const handleChange = (event) => {
@@ -32,7 +32,7 @@ export default function DropDown({
       onMouseDown={() => setSelect(!select)}
     >
       <GenderInputDiv>
-        <FormControl id={`${id}-form`} variant="filled" fullWidth>
+        <FormControl id={`${id}-form`} variant="filled">
           <InputLabel id="demo-simple-select-label">{type}</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -60,6 +60,8 @@ export default function DropDown({
 const GenderInputDiv = styled.div`
   display: flex;
   position: relative;
+  align-items: center;
+  justify-content: center;
 
   #demo-simple-select {
     box-sizing: border-box;

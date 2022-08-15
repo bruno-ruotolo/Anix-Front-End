@@ -57,6 +57,7 @@ table {
 //DEFAULT STYLES
 * {
   box-sizing: border-box;
+
 }
 
 body {
@@ -69,6 +70,38 @@ body {
   display:flex;
   align-items:center;
   justify-content:center;
+
+	overflow-x: hidden;
+
+  
+  scrollbar-width: auto;
+  scrollbar-color: #8F678B #ffffff;
+
+ 
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-image: linear-gradient(
+    #009090,
+    #013827,
+    #009090,
+    #013827,
+    #594d7d
+  );
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #8F678B;
+    border-radius: 10px;
+  }
+
+	&::-webkit-scrollbar-thumb:active {
+    background-color: #4a3648;
+  }
+
 }
 
 button {

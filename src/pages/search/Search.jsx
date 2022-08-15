@@ -9,6 +9,7 @@ import Footer from "../../components/Footer";
 import AnimeComponent from "../../components/AnimeComponent";
 import searchService from "../../services/searchService";
 import SearchHeader from "../../components/search/SearchHeader";
+import Header from "../../components/Header";
 
 export default function Search() {
   const { auth } = useContext(AuthContext);
@@ -62,6 +63,7 @@ export default function Search() {
 
   return (
     <>
+      <Header />
       <SearchHeader
         setSearchParams={(value) => setSearchParams(value)}
         searchParams={searchParams}
@@ -76,7 +78,12 @@ export default function Search() {
 
             return (
               <AnimeInfosContainer key={id * Math.random()}>
-                <span>{title?.slice(0, 16)}</span>
+                <span className="anime-title-mobile">
+                  {title?.slice(0, 16)}
+                </span>
+                <span className="anime-title-desktop">
+                  {title?.slice(0, 30)}
+                </span>
                 <AnimeComponent
                   className="anime-component"
                   key={id * Math.random()}
@@ -133,6 +140,10 @@ const SearchWrapper = styled.main`
     line-height: 22px;
     color: ${__styledVariables.buttonFontColor};
   }
+
+  @media (min-width: 800px) {
+    min-height: calc(100vh - 182px);
+  }
 `;
 
 const AnimesContainer = styled.section`
@@ -149,6 +160,14 @@ const AnimesContainer = styled.section`
   img {
     margin-bottom: 15px;
   }
+
+  @media (min-width: 800px) {
+    padding: 15px 80px 0 80px;
+
+    img {
+      margin-bottom: 35px;
+    }
+  }
 `;
 
 const AnimeInfosContainer = styled.div`
@@ -159,7 +178,7 @@ const AnimeInfosContainer = styled.div`
   justify-content: center;
   height: fit-content;
   flex-wrap: wrap;
-  max-width: 116px;
+  max-width: fit-content;
 
   span {
     font-family: ${__styledVariables.mainFont};
@@ -171,5 +190,24 @@ const AnimeInfosContainer = styled.div`
     text-align: center;
     margin-right: 18px;
     color: ${__styledVariables.buttonFontColor};
+  }
+
+  @media (min-width: 800px) {
+    max-width: 190px;
+    .anime-title-mobile {
+      display: none;
+    }
+
+    span {
+      font-size: 15px;
+      line-height: 17px;
+      margin-bottom: 11px;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .anime-title-desktop {
+      display: none;
+    }
   }
 `;

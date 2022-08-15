@@ -4,11 +4,13 @@ import ForYou from "../../components/home/ForYou";
 import ThisSeason from "../../components/home/ThisSeason";
 import MostPopular from "../../components/home/MostPopular";
 import Footer from "../../components/Footer";
+import Header from "../../components/Header";
 
 export default function Home() {
   return (
     <>
       <HomeWrapper>
+        <Header />
         <ForYou />
         <ThisSeason />
         <MostPopular />
@@ -19,6 +21,8 @@ export default function Home() {
 }
 
 const HomeWrapper = styled.main`
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   padding-bottom: 108px;
   width: 100vw;
@@ -31,4 +35,9 @@ const HomeWrapper = styled.main`
     #013827,
     #594d7d
   );
+
+  @media (min-width: 800px) {
+    flex-wrap: wrap;
+    padding-bottom: 80px;
+  }
 `;

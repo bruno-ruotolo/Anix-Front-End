@@ -214,6 +214,7 @@ const SignUpCredentialsMain = styled.main`
   }
 
   p {
+    cursor: pointer;
     position: absolute;
     width: 330px;
     bottom: 50px;
@@ -228,19 +229,37 @@ const SignUpCredentialsMain = styled.main`
     font-size: 18px;
     line-height: 20px;
   }
+
+  @media (min-width: 800px) {
+    img {
+      top: 60px;
+      width: 177px;
+      height: 160px;
+    }
+
+    p {
+      bottom: 200px;
+      width: 700px;
+    }
+  }
 `;
 
 const Form = styled.form`
-  max-width: 1000px;
+  max-width: 700px;
   bottom: 150px;
 
   button {
+    cursor: pointer;
     position: relative;
     min-width: 258px;
     width: 65%;
-    max-width: 500px;
+    max-width: 300px;
     height: 54px;
     margin-top: 30px;
+  }
+
+  @media (min-width: 800px) {
+    bottom: 280px;
   }
 `;
 
@@ -251,6 +270,7 @@ const PaswordInputDiv = styled.div`
   width: 85%;
 
   .eyeIcon {
+    cursor: pointer;
     position: absolute;
     right: 8px;
     top: 18px;

@@ -15,6 +15,7 @@ const StatusButtonWrapper = styled.div`
   button {
     width: 94px;
     height: 44.29px;
+    cursor: pointer;
 
     font-style: normal;
     font-weight: 700;
@@ -31,5 +32,12 @@ const StatusButtonWrapper = styled.div`
       `?s=${value}` === queryString || null
         ? "#009190"
         : __styledVariables.buttonMainColor};
+  }
+
+  @media (min-width: 800px) {
+    button {
+      width: 150px;
+      font-size: 23px;
+    }
   }
 `;

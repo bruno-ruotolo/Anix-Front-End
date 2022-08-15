@@ -23,6 +23,10 @@ export default function SignUpGenres() {
     thirdGenreId: "",
   });
   const [pageLoading, setPageLoading] = useState(false);
+  console.log(
+    "🚀 ~ file: SignUpGenres.jsx ~ line 26 ~ SignUpGenres ~ pageLoading",
+    pageLoading
+  );
 
   useEffect(() => {
     setPageLoading(true);
@@ -58,14 +62,20 @@ export default function SignUpGenres() {
 
   async function handleForm(e) {
     e.preventDefault();
-    setPageLoading(true);
-    try {
-      await signUpService.createUser({ ...signUp, ...signUpData });
-      setPageLoading(false);
-      navigate("/");
-    } catch (error) {
-      console.log(e.response.data);
-      setPageLoading(false);
+    if (
+      signUpData.firstGenreId &&
+      signUpData.secondGenreId &&
+      signUpData.thirdGenreId
+    ) {
+      setPageLoading(true);
+      try {
+        await signUpService.createUser({ ...signUp, ...signUpData });
+        setPageLoading(false);
+        navigate("/");
+      } catch (error) {
+        console.log(e.response);
+        setPageLoading(false);
+      }
     }
   }
 
@@ -150,10 +160,23 @@ const SignUpCredentialsMain = styled.main`
     font-size: 18px;
     line-height: 20px;
   }
+
+  @media (min-width: 800px) {
+    img {
+      top: 60px;
+      width: 177px;
+      height: 160px;
+    }
+
+    p {
+      bottom: 200px;
+      width: 700px;
+    }
+  }
 `;
 
 const Form = styled.form`
-  max-width: 1000px;
+  max-width: 600px;
   top: 160px;
 
   h2 {
@@ -169,11 +192,16 @@ const Form = styled.form`
   }
 
   button {
+    cursor: pointer;
     position: relative;
     min-width: 258px;
     width: 65%;
-    max-width: 500px;
+    max-width: 300px;
     height: 54px;
     margin-top: 30px;
+  }
+
+  @media (min-width: 800px) {
+    bottom: 180px;
   }
 `;

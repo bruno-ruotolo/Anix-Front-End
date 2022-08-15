@@ -2,13 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
-import AnimeComponent from "../../components/AnimeComponent";
 import { FiLogOut } from "react-icons/fi";
 
 import Footer from "../../components/Footer";
 import { AuthContext } from "../../contexts/AuthContext";
 import __styledVariables from "../../global/StyledVariables";
 import profileService from "../../services/profileService";
+import AnimeComponent from "../../components/AnimeComponent";
+import Header from "../../components/Header";
 
 export default function Profile() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -62,32 +63,36 @@ export default function Profile() {
 
   return profileInfos ? (
     <>
+      <Header />
       <ProfileWrapper>
         <FiLogOut className="logout-icon" onClick={handleLogout} />
-        <UserInfos>
-          <img src={profileInfos.image} alt="Profile" />
-          <h2>{profileInfos.username}</h2>
-        </UserInfos>
+        <ProfileWrapperDesktop>
+          <UserInfos>
+            <img src={profileInfos.image} alt="Profile" />
+            <h2>{profileInfos.username}</h2>
+          </UserInfos>
 
-        <ProfileAnimeInfosContainer>
-          <h3>Animes Infos</h3>
-          <AnimesInfos>
-            <InfosContainer>
-              <h4>{profileInfos.animeDoneQuantity}</h4>
-              <h5>Dones</h5>
-            </InfosContainer>
-            <InfosContainer>
-              <h4>{profileInfos.durationTime}</h4>
-              <h5>Hours</h5>
-            </InfosContainer>
-            <InfosContainer>
-              <h4>{profileInfos.episodesNumber}</h4>
-              <h5>Episodes</h5>
-            </InfosContainer>
-          </AnimesInfos>
-        </ProfileAnimeInfosContainer>
+          <ProfileAnimeInfosContainer>
+            <h3>Animes Infos</h3>
+            <AnimesInfos>
+              <InfosContainer>
+                <h4>{profileInfos.animeDoneQuantity}</h4>
+                <h5>Dones</h5>
+              </InfosContainer>
+              <InfosContainer>
+                <h4>{profileInfos.durationTime}</h4>
+                <h5>Hours</h5>
+              </InfosContainer>
+              <InfosContainer>
+                <h4>{profileInfos.episodesNumber}</h4>
+                <h5>Episodes</h5>
+              </InfosContainer>
+            </AnimesInfos>
+          </ProfileAnimeInfosContainer>
+        </ProfileWrapperDesktop>
 
-        <ProfileAnimeInfosContainer>
+        <hr />
+        <ProfileFavoriteContainer>
           <h3>Favorites</h3>
           <FavoriteAnimes>
             {profileInfos.UserFavoriteAnime?.map((anime) => {
@@ -100,7 +105,7 @@ export default function Profile() {
               );
             })}
           </FavoriteAnimes>
-        </ProfileAnimeInfosContainer>
+        </ProfileFavoriteContainer>
       </ProfileWrapper>
       <Footer />
     </>
@@ -146,6 +151,32 @@ const ProfileWrapper = styled.main`
     color: ${__styledVariables.buttonFontColor};
     filter: drop-shadow(4px 4px 2px #000000);
   }
+
+  hr {
+    width: 90%;
+    margin: 0 30px;
+    margin-top: 50px;
+  }
+
+  @media (min-width: 800px) {
+    min-height: calc(100vh - 77px);
+    .logout-icon {
+      font-size: 40px;
+      right: 10%;
+    }
+
+    h3 {
+      font-size: 34px;
+      margin: 30px;
+      line-height: 36px;
+    }
+  }
+
+  @media (max-width: 800px) {
+    hr {
+      display: none;
+    }
+  }
 `;
 
 const UserInfos = styled.article`
@@ -168,9 +199,36 @@ const UserInfos = styled.article`
     margin-top: 10px;
     color: ${__styledVariables.buttonFontColor};
   }
+
+  @media (min-width: 800px) {
+    img {
+      width: 150px;
+      height: 150px;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-top: 30px;
+      line-height: 32px;
+      width: 100%;
+    }
+  }
 `;
 
 const ProfileAnimeInfosContainer = styled.article`
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 800px) {
+    width: 100%;
+    max-width: 700px;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 150px;
+  }
+`;
+
+const ProfileFavoriteContainer = styled.article`
   display: flex;
   flex-direction: column;
 `;
@@ -179,6 +237,12 @@ const AnimesInfos = styled.div`
   display: flex;
   justify-content: space-evenly;
   margin-top: 20px;
+
+  @media (min-width: 800px) {
+    width: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+  }
 `;
 
 const FavoriteAnimes = styled.div`
@@ -220,5 +284,27 @@ const InfosContainer = styled.div`
     line-height: 22px;
     color: ${__styledVariables.buttonFontColor};
     text-shadow: 4px 4px 3px rgba(0, 0, 0, 0.55);
+  }
+
+  @media (min-width: 800px) {
+    h4 {
+      font-size: 25px;
+      margin-bottom: 10px;
+      margin-right: 20px;
+    }
+
+    h5 {
+      font-size: 25px;
+      margin-right: 20px;
+    }
+  }
+`;
+
+const ProfileWrapperDesktop = styled.div`
+  @media (min-width: 800px) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 300px;
   }
 `;

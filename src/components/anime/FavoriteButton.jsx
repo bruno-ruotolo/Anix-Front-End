@@ -19,6 +19,7 @@ const IconWrapper = styled.div`
   color: ${({ favorite }) => (favorite ? "#ff5edb" : "#28161C")};
 
   .favorite-star {
+    cursor: pointer;
     filter: drop-shadow(0px 0px 2px rgba(246, 244, 244, 1));
     stroke-width: 70px;
     stroke: black;
