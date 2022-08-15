@@ -206,6 +206,6 @@ const Form = styled.form`
   }
 
   @media (min-width: 800px) {
-    bottom: 180px;
+    top: 260px;
   }
 `;

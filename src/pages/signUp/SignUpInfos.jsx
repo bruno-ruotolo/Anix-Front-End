@@ -163,7 +163,7 @@ const SignUpCredentialsMain = styled.main`
 
 const Form = styled.form`
   max-width: 600px;
-  bottom: 150px;
+  top: 200px;
 
   button {
     cursor: pointer;
@@ -176,6 +176,6 @@ const Form = styled.form`
   }
 
   @media (min-width: 800px) {
-    bottom: 280px;
+    top: 250px;
   }
 `;

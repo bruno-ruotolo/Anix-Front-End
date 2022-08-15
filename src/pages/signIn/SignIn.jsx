@@ -168,7 +168,7 @@ const SignInCredentialsMain = styled.main`
   p {
     position: absolute;
     width: 330px;
-    bottom: 50px;
+    top: 550px;
     left: 50%;
     transform: translate(-50%, 0);
     cursor: pointer;
@@ -185,7 +185,7 @@ const SignInCredentialsMain = styled.main`
   @media (min-width: 800px) {
     height: 100vh;
     p {
-      bottom: 200px;
+      top: 650px;
     }
 
     img {
@@ -196,10 +196,11 @@ const SignInCredentialsMain = styled.main`
 
 const Form = styled.form`
   max-width: 600px;
-  bottom: 150px;
+  top: 250px;
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
+
   button {
     position: relative;
     min-width: 258px;
@@ -211,7 +212,7 @@ const Form = styled.form`
   }
 
   @media (min-width: 800px) {
-    bottom: 300px;
+    top: 350px;
     button {
       min-width: 258px;
     }

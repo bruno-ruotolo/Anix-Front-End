@@ -219,7 +219,7 @@ const SignUpCredentialsMain = styled.main`
     cursor: pointer;
     position: absolute;
     width: 330px;
-    bottom: 50px;
+    top: 560px;
     left: 50%;
     transform: translate(-50%, 0);
 
@@ -240,7 +240,7 @@ const SignUpCredentialsMain = styled.main`
     }
 
     p {
-      bottom: 200px;
+      top: 670px;
       width: 700px;
     }
   }
@@ -248,7 +248,7 @@ const SignUpCredentialsMain = styled.main`
 
 const Form = styled.form`
   max-width: 700px;
-  bottom: 150px;
+  top: 200px;
 
   button {
     cursor: pointer;
@@ -261,7 +261,7 @@ const Form = styled.form`
   }
 
   @media (min-width: 800px) {
-    bottom: 280px;
+    top: 290px;
   }
 `;
 
