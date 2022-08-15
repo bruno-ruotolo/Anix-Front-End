@@ -25,14 +25,14 @@ export default function Header() {
       />
       <HeaderMenusDiv>
         <HeaderIconContainer>
-          <h2>SEARCH</h2>
+          <h2 onClick={() => navigate("/search")}>SEARCH</h2>
           <RiSearchEyeFill
             className="browser-icon"
             onClick={() => navigate("/search")}
           />
         </HeaderIconContainer>
         <HeaderIconContainer>
-          <h2>MY ANIMES</h2>
+          <h2 onClick={() => navigate(`/user/animes?s=watching`)}>MY ANIMES</h2>
           <BsDisplayFill
             className="user-anime-icon"
             onClick={() => navigate(`/user/animes?s=watching`)}
@@ -40,7 +40,7 @@ export default function Header() {
         </HeaderIconContainer>
 
         <HeaderIconContainer>
-          <h2>HOME</h2>
+          <h2 onClick={() => navigate("/home")}>HOME</h2>
           <FaToriiGate
             className="home-icon"
             onClick={() => navigate("/home")}
@@ -48,10 +48,10 @@ export default function Header() {
         </HeaderIconContainer>
 
         <HeaderIconContainer>
-          <h2>PROFILE</h2>
+          <h2 onClick={() => navigate(`/user`)}>PROFILE</h2>
           <MdPersonPin
             className="profile-icon"
-            onClick={() => navigate(`/user/${auth.id}`)}
+            onClick={() => navigate(`/user`)}
           />
         </HeaderIconContainer>
       </HeaderMenusDiv>
@@ -99,6 +99,7 @@ const HeaderWrapper = styled.header`
   @keyframes rotate {
     0% {
       transform: rotateY(0);
+      transform: rotate3d();
     }
 
     50% {

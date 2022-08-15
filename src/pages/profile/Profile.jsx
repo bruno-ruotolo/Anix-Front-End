@@ -20,10 +20,7 @@ export default function Profile() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await profileService.getProfileInfos(
-          auth.token,
-          auth.id
-        );
+        const response = await profileService.getProfileInfos(auth.token);
         setProfileInfos(response);
       } catch (error) {
         if (error.response === 401) {
@@ -150,6 +147,7 @@ const ProfileWrapper = styled.main`
     font-size: 30px;
     color: ${__styledVariables.buttonFontColor};
     filter: drop-shadow(4px 4px 2px #000000);
+    cursor: pointer;
   }
 
   hr {

@@ -52,7 +52,7 @@ export default function App() {
               }
             />
             <Route
-              path="/user/:useId"
+              path="/user"
               element={
                 <PrivateRoute>
                   <Profile />

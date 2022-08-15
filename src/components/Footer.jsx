@@ -4,12 +4,8 @@ import { RiSearchEyeFill } from "react-icons/ri";
 import { BsDisplayFill } from "react-icons/bs";
 import { FaToriiGate } from "react-icons/fa";
 import { MdPersonPin } from "react-icons/md";
-import { useContext } from "react";
-
-import { AuthContext } from "../contexts/AuthContext";
 
 export default function Footer({ position }) {
-  const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   return (
@@ -25,7 +21,7 @@ export default function Footer({ position }) {
       <FaToriiGate className="homeFooter" onClick={() => navigate("/home")} />
       <MdPersonPin
         className="profileFooter"
-        onClick={() => navigate(`/user/${auth.id}`)}
+        onClick={() => navigate(`/user`)}
       />
     </FooterWrapper>
   );
