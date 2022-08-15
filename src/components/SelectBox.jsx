@@ -11,10 +11,11 @@ export default function SelectBox({
   width,
   height,
   type = "text",
+  id,
 }) {
   const [isActive, setIsActive] = useState(false);
   const [input, setInput] = useState("");
-  const [id, setId] = useState();
+  const [idInput, setIdInput] = useState();
 
   return (
     <SelectWrapper>
@@ -32,7 +33,7 @@ export default function SelectBox({
           if (item) {
             setSelectedItem({ id: item.id, name: item.name || item.year });
             setInput(item.name || item.year);
-            setId(item.id);
+            setIdInput(item.id);
           }
         }}
       >
@@ -46,6 +47,7 @@ export default function SelectBox({
             />
           )}
           <input
+            id={id}
             type={type}
             onFocus={() => setIsActive(true)}
             onChange={(e) => {
@@ -68,7 +70,7 @@ export default function SelectBox({
                 setSelectedItem={(value) => {
                   setSelectedItem(value);
                   setInput(value.name);
-                  setId(value.id);
+                  setIdInput(value.id);
                 }}
               />
             );

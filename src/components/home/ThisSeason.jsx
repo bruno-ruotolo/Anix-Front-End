@@ -71,8 +71,8 @@ export default function ThisSeason() {
       <SeasonTitleDiv>
         <h1>This Season</h1>
         <BsFillPlusSquareFill
-          className="plusIcon"
-          id="plusIconSeason"
+          className="plus-icon"
+          id="plus-icon-season"
           onClick={() => {
             navigate("/season");
           }}
@@ -93,6 +93,7 @@ export default function ThisSeason() {
         />
 
         <FaArrowAltCircleLeft
+          id="scroll-arrow-left"
           className="scroll-arrow-left-class"
           onClick={() => handleScroll(false)}
         />
@@ -128,7 +129,7 @@ const SeasonTitleDiv = styled.div`
   justify-content: space-between;
   width: 100%;
 
-  .plusIcon {
+  .plus-icon {
     position: absolute;
     right: 0;
     color: ${__styledVariables.buttonFontColor};

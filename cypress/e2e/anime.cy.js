@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 
 import { faker } from "@faker-js/faker";
+import { wait } from "@testing-library/user-event/dist/utils";
 
 beforeEach(() => {
   cy.resetAllData();
@@ -9,8 +10,8 @@ beforeEach(() => {
 
 const URI = "http://localhost:3000";
 
-describe("Home Test Suite", () => {
-  it("should navigate through home page", () => {
+describe("Anime Test Suite", () => {
+  it("should check anime page", () => {
     const GENDER_QUANTITY = 5;
     const GENRE_QUANTITY = 30;
     const userInformations = {
@@ -37,7 +38,17 @@ describe("Home Test Suite", () => {
     cy.wait("@getSeason");
     cy.wait("@getPopular");
 
-    cy.get("#scroll-arrow-right").click({ force: true });
-    cy.get("#scroll-arrow-left").click({ force: true });
+    cy.get("#for-you-anime").click();
+
+    cy.url().should("contains", `${URI}/anime`);
+
+    cy.get("#demo-simple-select").click();
+    cy.get("[data-value*='2']").click();
+
+    cy.get(".favorite-star").click();
+    wait(1000);
+    cy.get(".favorite-star").click();
+
+    cy.get(".moon-rate").click({ multiple: true });
   });
 });

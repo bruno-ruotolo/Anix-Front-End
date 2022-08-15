@@ -8,9 +8,8 @@ beforeEach(() => {
 });
 
 const URI = "http://localhost:3000";
-
-describe("Home Test Suite", () => {
-  it("should navigate through home page", () => {
+describe("User Status Test Suite", () => {
+  it("should check user status page", () => {
     const GENDER_QUANTITY = 5;
     const GENRE_QUANTITY = 30;
     const userInformations = {
@@ -37,7 +36,10 @@ describe("Home Test Suite", () => {
     cy.wait("@getSeason");
     cy.wait("@getPopular");
 
-    cy.get("#scroll-arrow-right").click({ force: true });
-    cy.get("#scroll-arrow-left").click({ force: true });
+    cy.intercept("GET", "/user/animes?s=watching").as("getUserStatus");
+    cy.get(".user-anime-icon").click({ force: true });
+    cy.wait("@getUserStatus");
+
+    cy.url().should("contains", `${URI}/user/animes`);
   });
 });

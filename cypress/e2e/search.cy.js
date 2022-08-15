@@ -8,9 +8,8 @@ beforeEach(() => {
 });
 
 const URI = "http://localhost:3000";
-
-describe("Home Test Suite", () => {
-  it("should navigate through home page", () => {
+describe("Search Test Suite", () => {
+  it("should check search page", () => {
     const GENDER_QUANTITY = 5;
     const GENRE_QUANTITY = 30;
     const userInformations = {
@@ -37,7 +36,13 @@ describe("Home Test Suite", () => {
     cy.wait("@getSeason");
     cy.wait("@getPopular");
 
-    cy.get("#scroll-arrow-right").click({ force: true });
-    cy.get("#scroll-arrow-left").click({ force: true });
+    cy.intercept("GET", "/search").as("getSearch");
+    cy.get(".browser-icon").click({ force: true });
+    cy.wait("@getSearch");
+
+    cy.url().should("contains", `${URI}/search`);
+
+    cy.get("#select-box-genre").type("Action");
+    cy.get("#1").click({ force: true });
   });
 });

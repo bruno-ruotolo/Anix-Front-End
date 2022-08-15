@@ -1,12 +1,19 @@
 import styled from "styled-components";
 import __styledVariables from "../../global/StyledVariables";
 
-export default function StatusButton({ handleButton, queryString, status }) {
+export default function StatusButton({
+  handleButton,
+  queryString,
+  status,
+  id,
+}) {
   const value = status.toLowerCase();
 
   return (
     <StatusButtonWrapper value={value} queryString={queryString}>
-      <button onClick={() => handleButton(value)}>{status}</button>
+      <button id={id} onClick={() => handleButton(value)}>
+        {status}
+      </button>
     </StatusButtonWrapper>
   );
 }

@@ -18,6 +18,7 @@ export default function UserAnimesHeader({ setSearchParams, queryString }) {
         {status.map((status, index) => {
           return (
             <StatusButton
+              id={`${status}-button`}
               key={index}
               status={status}
               queryString={queryString}

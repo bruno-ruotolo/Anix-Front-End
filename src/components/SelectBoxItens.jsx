@@ -13,7 +13,7 @@ export default function SelectBoxItens({
       name={name}
       onMouseDown={() => setSelectedItem({ id, name })}
     >
-      <p>{name}</p>
+      <p id={id}>{name}</p>
     </SelectItemWrapper>
   );
 }

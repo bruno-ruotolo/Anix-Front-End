@@ -94,6 +94,7 @@ export default function SearchHeader({ setSearchParams, searchParams }) {
           list={yearsList}
         />
         <SelectBox
+          id="select-box-genre"
           height="35px"
           width="200px"
           placeholder="Genre"
