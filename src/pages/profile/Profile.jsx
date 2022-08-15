@@ -92,15 +92,21 @@ export default function Profile() {
         <ProfileFavoriteContainer>
           <h3>Favorites</h3>
           <FavoriteAnimes>
-            {profileInfos.UserFavoriteAnime?.map((anime) => {
-              const {
-                animeId,
-                anime: { image },
-              } = anime;
-              return (
-                <AnimeComponent key={animeId} id={animeId} image={image} />
-              );
-            })}
+            {profileInfos.UserFavoriteAnime.length > 0 ? (
+              profileInfos.UserFavoriteAnime?.map((anime) => {
+                const {
+                  animeId,
+                  anime: { image },
+                } = anime;
+                return (
+                  <AnimeComponent key={animeId} id={animeId} image={image} />
+                );
+              })
+            ) : (
+              <p>You don't have any favorite animes yet </p>
+            )}
+
+            {}
           </FavoriteAnimes>
         </ProfileFavoriteContainer>
       </ProfileWrapper>
@@ -253,6 +259,17 @@ const FavoriteAnimes = styled.div`
   flex-wrap: wrap;
   transition: 0.5s;
   padding-right: 7px;
+
+  p {
+    font-family: ${__styledVariables.mainFont};
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+    line-height: 22px;
+    color: ${__styledVariables.buttonFontColor};
+  }
 
   img {
     margin-bottom: 15px;

@@ -90,6 +90,7 @@ export default function SignUpInfos() {
         <DropDown
           id="select-box-infos"
           disabled={pageLoading}
+          width="600px"
           type="Gender"
           array={gendersArr}
           setCallBack={(value) =>
@@ -141,6 +142,9 @@ const SignUpCredentialsMain = styled.main`
     font-weight: 400;
     font-size: 18px;
     line-height: 20px;
+  }
+  .MuiFormControl-root {
+    width: 100%;
   }
 
   @media (min-width: 800px) {

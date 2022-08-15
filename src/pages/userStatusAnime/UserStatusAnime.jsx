@@ -19,7 +19,7 @@ export default function UserStatusAnime() {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [animes, setAnimes] = useState([]);
+  const [animes, setAnimes] = useState();
   const [queryString, setQueryString] = useState(query || "?s=watching");
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function UserStatusAnime() {
     })();
   }, [auth.token, queryString, navigate, searchParams, query]);
 
-  return animes.length > 0 ? (
+  return animes ? (
     <>
       <Header />
       <UserAnimesHeader

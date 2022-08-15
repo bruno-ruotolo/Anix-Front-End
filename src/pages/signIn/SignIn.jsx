@@ -103,6 +103,7 @@ export default function SignIn() {
             autoComplete="true"
             value={signInData.password}
             pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[.@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+            title="Must have 8 characters, at least one letter, one number and one special character"
             onChange={(e) => handleInput(e, "password")}
             disabled={pageLoading}
             required

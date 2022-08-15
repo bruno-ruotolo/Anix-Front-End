@@ -161,6 +161,10 @@ const SignUpCredentialsMain = styled.main`
     line-height: 20px;
   }
 
+  .MuiFormControl-root {
+    width: 100%;
+  }
+
   @media (min-width: 800px) {
     img {
       top: 60px;

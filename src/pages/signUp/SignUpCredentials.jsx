@@ -122,6 +122,7 @@ export default function SignUpCredentials() {
             autoComplete="true"
             value={signUpData.password}
             pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[.@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+            title="Must have 8 characters, at least one letter, one number and one special character"
             onChange={(e) => handleInput(e, "password")}
             disabled={pageLoading}
             required
@@ -151,6 +152,7 @@ export default function SignUpCredentials() {
             placeholder="Confirm Password"
             autoComplete="true"
             pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[.@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+            title="Must have 8 characters, at least one letter, one number and one special character"
             value={signUpData.confirmPassword}
             onChange={(e) => handleInput(e, "confirmPassword")}
             disabled={pageLoading}
