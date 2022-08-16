@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import Swal from "sweetalert2";
 
 import { AuthContext } from "../../contexts/AuthContext";
 import __styledVariables from "../../global/StyledVariables";
@@ -10,6 +9,8 @@ import Footer from "../../components/Footer";
 import UserAnimesHeader from "../../components/userAnimes/UserAnimesHeader";
 import AnimeComponent from "../../components/AnimeComponent";
 import Header from "../../components/Header";
+import { __swalErrorMessage } from "../../utils/utils";
+import { FallingLines } from "react-loader-spinner";
 
 export default function UserStatusAnime() {
   const { auth } = useContext(AuthContext);
@@ -21,8 +22,10 @@ export default function UserStatusAnime() {
 
   const [animes, setAnimes] = useState();
   const [queryString, setQueryString] = useState(query || "?s=watching");
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
+    setPageLoading(true);
     (async () => {
       try {
         const result = await userStatusAnime.getUserStatusAnime(
@@ -31,65 +34,63 @@ export default function UserStatusAnime() {
         );
         setAnimes(result);
         setQueryString(query);
+        setPageLoading(false);
       } catch (error) {
         if (error.response.status === 401) {
-          Swal.fire({
-            title: "Session is Expired or Invalid",
-            text: "Please Login Again",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage(
+            "Session is Expired or Invalid",
+            "Please, Login Again!"
+          );
 
           navigate("/");
         } else {
-          Swal.fire({
-            title: "Something got wrong",
-            text: "Try agains later!",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage("Something got wrong", "Please, Try again later!");
         }
+        setPageLoading(false);
       }
     })();
   }, [auth.token, queryString, navigate, searchParams, query]);
 
-  return animes ? (
+  return (
     <>
       <Header />
       <UserAnimesHeader
         setSearchParams={(value) => setSearchParams(value)}
         queryString={queryString}
       />
-      <UserAnimesWrapper>
-        <h2>
-          {" "}
-          {animes.length > 1
-            ? `${animes.length} Animes Found`
-            : `${animes.length} Anime Found`}
-        </h2>
-        <AnimesContainer>
-          {animes.map((anime) => {
-            const {
-              animeId,
-              anime: { image },
-            } = anime;
+      {!pageLoading && animes ? (
+        <UserAnimesWrapper>
+          <h2>
+            {animes.length > 1
+              ? `${animes.length} Animes Found`
+              : `${animes.length} Anime Found`}
+          </h2>
+          <AnimesContainer>
+            {animes.map((anime) => {
+              const {
+                animeId,
+                anime: { image },
+              } = anime;
 
-            return <AnimeComponent key={animeId} id={animeId} image={image} />;
-          })}
-        </AnimesContainer>
-      </UserAnimesWrapper>
+              return (
+                <AnimeComponent key={animeId} id={animeId} image={image} />
+              );
+            })}
+          </AnimesContainer>
+        </UserAnimesWrapper>
+      ) : (
+        <LoadingDiv>
+          <FallingLines
+            color={__styledVariables.buttonFontColor}
+            width="130"
+            visible={true}
+            ariaLabel="falling-lines-loading"
+          />
+        </LoadingDiv>
+      )}
+
       <Footer />
     </>
-  ) : (
-    <></>
   );
 }
 
@@ -150,5 +151,16 @@ const AnimesContainer = styled.section`
     img {
       margin-bottom: 25px;
     }
+  }
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 62px);
+
+  @media (min-width: 800px) {
+    height: calc(100vh - 139px);
   }
 `;

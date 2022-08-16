@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import Swal from "sweetalert2";
 
 import { AuthContext } from "../../contexts/AuthContext";
 import __styledVariables from "../../global/StyledVariables";
@@ -10,6 +9,8 @@ import AnimeComponent from "../../components/AnimeComponent";
 import searchService from "../../services/searchService";
 import SearchHeader from "../../components/search/SearchHeader";
 import Header from "../../components/Header";
+import { __swalErrorMessage } from "../../utils/utils";
+import { FallingLines } from "react-loader-spinner";
 
 export default function Search() {
   const { auth } = useContext(AuthContext);
@@ -21,8 +22,10 @@ export default function Search() {
 
   const [animes, setAnimes] = useState([1]);
   const [queryString, setQueryString] = useState(query || "");
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
+    setPageLoading(true);
     (async () => {
       try {
         const result = await searchService.getSearchAnimes(
@@ -31,32 +34,18 @@ export default function Search() {
         );
         setAnimes(result);
         setQueryString(query);
+        setPageLoading(false);
       } catch (error) {
         if (error.response.status === 401) {
-          Swal.fire({
-            title: "Session is Expired or Invalid",
-            text: "Please Login Again",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
-
+          __swalErrorMessage(
+            "Session is Expired or Invalid",
+            "Please, Login Again!"
+          );
           navigate("/");
         } else {
-          Swal.fire({
-            title: "Something got wrong",
-            text: "Try agains later!",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage("Something got wrong", "Please, Try again later!");
         }
+        setPageLoading(false);
       }
     })();
   }, [auth.token, queryString, navigate, searchParams, query]);
@@ -64,37 +53,51 @@ export default function Search() {
   return (
     <>
       <Header />
+
       <SearchHeader
         setSearchParams={(value) => setSearchParams(value)}
         searchParams={searchParams}
         queryString={queryString}
       />
+      {!pageLoading ? (
+        <>
+          <SearchWrapper>
+            <p>{animes.length === 0 ? "No Animes Found" : ""}</p>
+            <AnimesContainer>
+              {animes?.map((anime) => {
+                const { id, image, title } = anime;
 
-      <SearchWrapper>
-        <p>{animes.length === 0 ? "No Animes Found" : ""}</p>
-        <AnimesContainer>
-          {animes?.map((anime) => {
-            const { id, image, title } = anime;
+                return (
+                  <AnimeInfosContainer key={id * Math.random()}>
+                    <span className="anime-title-mobile">
+                      {title?.slice(0, 16)}
+                    </span>
+                    <span className="anime-title-desktop">
+                      {title?.slice(0, 30)}
+                    </span>
+                    <AnimeComponent
+                      className="anime-component"
+                      key={id * Math.random()}
+                      id={id}
+                      image={image}
+                    />
+                  </AnimeInfosContainer>
+                );
+              })}
+            </AnimesContainer>
+          </SearchWrapper>
+        </>
+      ) : (
+        <LoadingDiv>
+          <FallingLines
+            color={__styledVariables.buttonFontColor}
+            width="130"
+            visible={true}
+            ariaLabel="falling-lines-loading"
+          />
+        </LoadingDiv>
+      )}
 
-            return (
-              <AnimeInfosContainer key={id * Math.random()}>
-                <span className="anime-title-mobile">
-                  {title?.slice(0, 16)}
-                </span>
-                <span className="anime-title-desktop">
-                  {title?.slice(0, 30)}
-                </span>
-                <AnimeComponent
-                  className="anime-component"
-                  key={id * Math.random()}
-                  id={id}
-                  image={image}
-                />
-              </AnimeInfosContainer>
-            );
-          })}
-        </AnimesContainer>
-      </SearchWrapper>
       <Footer />
     </>
   );
@@ -209,5 +212,16 @@ const AnimeInfosContainer = styled.div`
     .anime-title-desktop {
       display: none;
     }
+  }
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  @media (min-width: 800px) {
+    height: calc(100vh - 105px);
   }
 `;

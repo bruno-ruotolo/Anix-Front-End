@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Swal from "sweetalert2";
 import { FiLogOut } from "react-icons/fi";
 
 import Footer from "../../components/Footer";
@@ -10,44 +9,35 @@ import __styledVariables from "../../global/StyledVariables";
 import profileService from "../../services/profileService";
 import AnimeComponent from "../../components/AnimeComponent";
 import Header from "../../components/Header";
+import { __swalErrorMessage } from "../../utils/utils";
+import { FallingLines } from "react-loader-spinner";
 
 export default function Profile() {
   const { auth, setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [profileInfos, setProfileInfos] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
+    setPageLoading(true);
     (async () => {
       try {
         const response = await profileService.getProfileInfos(auth.token);
         setProfileInfos(response);
+        setPageLoading(false);
       } catch (error) {
         if (error.response === 401) {
-          Swal.fire({
-            title: "Session is Expired or Invalid",
-            text: "Please Login Again",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage(
+            "Session is Expired or Invalid",
+            "Please, Login Again!"
+          );
 
           navigate("/");
         } else {
-          Swal.fire({
-            title: "Something got wrong",
-            text: "Try agains later!",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage("Something got wrong", "Please, Try again later!");
         }
+        setPageLoading(false);
       }
     })();
   }, [navigate, auth.token, auth.id]);
@@ -58,62 +48,70 @@ export default function Profile() {
     navigate("/");
   }
 
-  return profileInfos ? (
+  return (
     <>
       <Header />
-      <ProfileWrapper>
-        <FiLogOut className="logout-icon" onClick={handleLogout} />
-        <ProfileWrapperDesktop>
-          <UserInfos>
-            <img src={profileInfos.image} alt="Profile" />
-            <h2>{profileInfos.username}</h2>
-          </UserInfos>
+      {!pageLoading && profileInfos ? (
+        <ProfileWrapper>
+          <FiLogOut className="logout-icon" onClick={handleLogout} />
+          <ProfileWrapperDesktop>
+            <UserInfos>
+              <img src={profileInfos.image} alt="Profile" />
+              <h2>{profileInfos.username}</h2>
+            </UserInfos>
 
-          <ProfileAnimeInfosContainer>
-            <h3>Animes Infos</h3>
-            <AnimesInfos>
-              <InfosContainer>
-                <h4>{profileInfos.animeDoneQuantity}</h4>
-                <h5>Dones</h5>
-              </InfosContainer>
-              <InfosContainer>
-                <h4>{profileInfos.durationTime}</h4>
-                <h5>Hours</h5>
-              </InfosContainer>
-              <InfosContainer>
-                <h4>{profileInfos.episodesNumber}</h4>
-                <h5>Episodes</h5>
-              </InfosContainer>
-            </AnimesInfos>
-          </ProfileAnimeInfosContainer>
-        </ProfileWrapperDesktop>
+            <ProfileAnimeInfosContainer>
+              <h3>Animes Infos</h3>
+              <AnimesInfos>
+                <InfosContainer>
+                  <h4>{profileInfos.animeDoneQuantity}</h4>
+                  <h5>Dones</h5>
+                </InfosContainer>
+                <InfosContainer>
+                  <h4>{profileInfos.durationTime}</h4>
+                  <h5>Hours</h5>
+                </InfosContainer>
+                <InfosContainer>
+                  <h4>{profileInfos.episodesNumber}</h4>
+                  <h5>Episodes</h5>
+                </InfosContainer>
+              </AnimesInfos>
+            </ProfileAnimeInfosContainer>
+          </ProfileWrapperDesktop>
 
-        <hr />
-        <ProfileFavoriteContainer>
-          <h3>Favorites</h3>
-          <FavoriteAnimes>
-            {profileInfos.UserFavoriteAnime.length > 0 ? (
-              profileInfos.UserFavoriteAnime?.map((anime) => {
-                const {
-                  animeId,
-                  anime: { image },
-                } = anime;
-                return (
-                  <AnimeComponent key={animeId} id={animeId} image={image} />
-                );
-              })
-            ) : (
-              <p>You don't have any favorite animes yet </p>
-            )}
+          <hr />
+          <ProfileFavoriteContainer>
+            <h3>Favorites</h3>
+            <FavoriteAnimes>
+              {profileInfos.UserFavoriteAnime.length > 0 ? (
+                profileInfos.UserFavoriteAnime?.map((anime) => {
+                  const {
+                    animeId,
+                    anime: { image },
+                  } = anime;
+                  return (
+                    <AnimeComponent key={animeId} id={animeId} image={image} />
+                  );
+                })
+              ) : (
+                <p>You don't have any favorite animes yet </p>
+              )}
+            </FavoriteAnimes>
+          </ProfileFavoriteContainer>
+        </ProfileWrapper>
+      ) : (
+        <LoadingDiv>
+          <FallingLines
+            color={__styledVariables.buttonFontColor}
+            width="150"
+            visible={true}
+            ariaLabel="falling-lines-loading"
+          />
+        </LoadingDiv>
+      )}
 
-            {}
-          </FavoriteAnimes>
-        </ProfileFavoriteContainer>
-      </ProfileWrapper>
       <Footer />
     </>
-  ) : (
-    <></>
   );
 }
 
@@ -321,5 +319,16 @@ const ProfileWrapperDesktop = styled.div`
     align-items: center;
     justify-content: flex-start;
     padding: 20px 300px;
+  }
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  @media (min-width: 800px) {
+    height: calc(100vh - 77px);
   }
 `;

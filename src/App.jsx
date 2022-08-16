@@ -14,7 +14,6 @@ import UserStatusAnime from "./pages/userStatusAnime/UserStatusAnime";
 import Profile from "./pages/profile/Profile";
 import Season from "./pages/season/Season";
 import Search from "./pages/search/Search";
-import SelectBox from "./components/SelectBox";
 
 export default function App() {
   return (

@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
+import { FallingLines } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Swal from "sweetalert2";
+
 import { AuthContext } from "../../contexts/AuthContext";
 import __styledVariables from "../../global/StyledVariables";
 import homeService from "../../services/homeService";
+import { __swalErrorMessage } from "../../utils/utils";
 
 export default function ForYou() {
   const { auth } = useContext(AuthContext);
@@ -16,43 +18,36 @@ export default function ForYou() {
     description: "",
     episodes: "",
   });
+
+  const [pageLoading, setPageLoading] = useState(false);
+
   const { image, title, description, episodes, id } = forYouAnime;
 
   useEffect(() => {
+    setPageLoading(true);
+
     (async () => {
       try {
         const { anime } = await homeService.getForYou(auth.token);
         setForYouAnime(anime);
+        setPageLoading(false);
       } catch (error) {
         if (error.response.status === 401) {
-          Swal.fire({
-            title: "Session is Expired or Invalid",
-            text: "Please Login Again",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage(
+            "Session is Expired or Invalid",
+            "Please, Login Again!"
+          );
           navigate("/");
+          setPageLoading(false);
         } else {
-          Swal.fire({
-            title: "Something got wrong",
-            text: "Try agains later!",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage("Something got wrong", "Please, Try again later!");
         }
+        setPageLoading(false);
       }
     })();
   }, [auth.token, navigate]);
 
-  return (
+  return !pageLoading ? (
     <ForYouWrapper>
       <h1>For You</h1>
       <ForYouInfosDiv
@@ -73,6 +68,15 @@ export default function ForYou() {
         </AnimeTextInfosDiv>
       </ForYouInfosDiv>
     </ForYouWrapper>
+  ) : (
+    <LoadingDiv>
+      <FallingLines
+        color={__styledVariables.buttonFontColor}
+        width="150"
+        visible={true}
+        ariaLabel="falling-lines-loading"
+      />
+    </LoadingDiv>
   );
 }
 
@@ -209,5 +213,15 @@ const AnimeTextInfosDiv = styled.div`
     h3 {
       font-size: 18px;
     }
+  }
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (min-width: 800px) {
+    height: 400px;
   }
 `;

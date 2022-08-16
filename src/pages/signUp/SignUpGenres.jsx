@@ -10,23 +10,20 @@ import __styledVariables from "../../global/StyledVariables";
 import DropDown from "../../components/DropDown";
 import signUpService from "../../services/signUpService";
 import { TailSpin } from "react-loader-spinner";
+import { __swalErrorMessage } from "../../utils/utils";
 
 export default function SignUpGenres() {
   const navigate = useNavigate();
-
   const { signUp } = useContext(SignUpContext);
 
   const [genresArr, setGenresArr] = useState();
+
   const [signUpData, setSignUpData] = useState({
     firstGenreId: "",
     secondGenreId: "",
     thirdGenreId: "",
   });
   const [pageLoading, setPageLoading] = useState(false);
-  console.log(
-    "🚀 ~ file: SignUpGenres.jsx ~ line 26 ~ SignUpGenres ~ pageLoading",
-    pageLoading
-  );
 
   useEffect(() => {
     setPageLoading(true);
@@ -44,9 +41,7 @@ export default function SignUpGenres() {
         setGenresArr(promise);
         setPageLoading(false);
       } catch (e) {
-        console.log(
-          "Somenthing Went Wrong on TryCatch Block (DropDown.jsx [12])"
-        );
+        __swalErrorMessage("Something got wrong", "Please, try again later!");
         setPageLoading(false);
       }
     }
@@ -73,7 +68,7 @@ export default function SignUpGenres() {
         setPageLoading(false);
         navigate("/");
       } catch (error) {
-        console.log(e.response);
+        __swalErrorMessage("Something got wrong", "Please, try again later!");
         setPageLoading(false);
       }
     }

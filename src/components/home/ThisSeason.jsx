@@ -1,7 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Swal from "sweetalert2";
 import { AuthContext } from "../../contexts/AuthContext";
 import { BsFillPlusSquareFill } from "react-icons/bs";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
@@ -11,6 +10,8 @@ import __styledVariables from "../../global/StyledVariables";
 
 import homeService from "../../services/homeService";
 import AnimeComponent from "../AnimeComponent";
+import { __swalErrorMessage } from "../../utils/utils";
+import { FallingLines } from "react-loader-spinner";
 
 export default function ThisSeason() {
   const scroll = Scroll.animateScroll;
@@ -20,36 +21,26 @@ export default function ThisSeason() {
   const ref = useRef(null);
 
   const [seasonAnime, setSeasonAnime] = useState([]);
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
+    setPageLoading(true);
     (async () => {
       try {
         const animesList = await homeService.getSeason(auth.token);
         setSeasonAnime(animesList);
+        setPageLoading(false);
       } catch (error) {
         if (error.response.status === 401) {
-          Swal.fire({
-            title: "Session is Expired or Invalid",
-            text: "Please Login Again",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage(
+            "Session is Expired or Invalid",
+            "Please, Login Again!"
+          );
+          setPageLoading(false);
           navigate("/");
         } else {
-          Swal.fire({
-            title: "Something got wrong",
-            text: "Try agains later!",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage("Something got wrong", "Please, Try again later!");
+          setPageLoading(false);
         }
       }
     })();
@@ -78,26 +69,37 @@ export default function ThisSeason() {
           }}
         />
       </SeasonTitleDiv>
-      <SeasonAnimes id="season-animes-list" ref={ref}>
-        {seasonAnime.map((anime, index) => {
-          const { id, image, title } = anime;
-          return (
-            <AnimeComponent key={id} image={image} id={id} title={title} />
-          );
-        })}
+      {!pageLoading ? (
+        <SeasonAnimes id="season-animes-list" ref={ref}>
+          {seasonAnime.map((anime, index) => {
+            const { id, image, title } = anime;
+            return (
+              <AnimeComponent key={id} image={image} id={id} title={title} />
+            );
+          })}
 
-        <FaArrowAltCircleRight
-          id="scroll-arrow-right"
-          className="scroll-arrow-right-class"
-          onClick={() => handleScroll(true)}
-        />
+          <FaArrowAltCircleRight
+            id="scroll-arrow-right"
+            className="scroll-arrow-right-class"
+            onClick={() => handleScroll(true)}
+          />
 
-        <FaArrowAltCircleLeft
-          id="scroll-arrow-left"
-          className="scroll-arrow-left-class"
-          onClick={() => handleScroll(false)}
-        />
-      </SeasonAnimes>
+          <FaArrowAltCircleLeft
+            id="scroll-arrow-left"
+            className="scroll-arrow-left-class"
+            onClick={() => handleScroll(false)}
+          />
+        </SeasonAnimes>
+      ) : (
+        <LoadingDiv>
+          <FallingLines
+            color={__styledVariables.buttonFontColor}
+            width="130"
+            visible={true}
+            ariaLabel="falling-lines-loading"
+          />
+        </LoadingDiv>
+      )}
     </SeasonWrapper>
   );
 }
@@ -202,6 +204,21 @@ const SeasonAnimes = styled.div`
     .scroll-arrow-right-class {
       font-size: 35px;
       right: 50px;
+    }
+  }
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+
+  @media (min-width: 800px) {
+    height: 200px;
+
+    svg {
+      width: 150px;
     }
   }
 `;

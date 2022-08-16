@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Swal from "sweetalert2";
 
 import Footer from "../../components/Footer";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -11,6 +10,8 @@ import DropDown from "../../components/DropDown";
 import RateButton from "../../components/anime/RateButton";
 import FavoriteButton from "../../components/anime/FavoriteButton";
 import Header from "../../components/Header";
+import { __swalErrorMessage } from "../../utils/utils";
+import { FallingLines, Oval } from "react-loader-spinner";
 
 export default function Anime() {
   const { auth } = useContext(AuthContext);
@@ -23,10 +24,15 @@ export default function Anime() {
   const [currentStatus, setCurrentStatus] = useState("");
   const [rate, setRate] = useState(0);
   const [favorite, setFavorite] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
+  const [statusLoading, setStatusLoading] = useState(false);
+  const [rateLoading, setRateLoading] = useState(false);
 
   const rateIconsValues = [1, 2, 3, 4, 5];
 
   useEffect(() => {
+    setPageLoading(true);
     (async () => {
       try {
         const animeInfos = await animeService.getAnimeInfos(auth.token, id);
@@ -36,205 +42,209 @@ export default function Anime() {
         setStatusArr(status);
         setRate(animeInfos.UserRateAnime[0]?.rate);
         setFavorite(animeInfos.UserFavoriteAnime.length > 0 ? true : false);
+        setPageLoading(false);
       } catch (error) {
         if (error.response === 401) {
-          Swal.fire({
-            title: "Session is Expired or Invalid",
-            text: "Please Login Again",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage(
+            "Session is Expired or Invalid",
+            "Please, Login Again!"
+          );
 
           navigate("/");
         } else {
-          Swal.fire({
-            title: "Something got wrong",
-            text: "Try agains later!",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage("Something got wrong", "Please, Try again later!");
         }
+        setPageLoading(false);
       }
     })();
   }, [navigate, auth.token, id]);
 
   async function handleStatus(statusId) {
+    setStatusLoading(true);
     try {
       await animeService.createStatus(auth.token, id, statusId);
+      setStatusLoading(false);
     } catch (error) {
       if (error.response.status === 401) {
-        Swal.fire({
-          title: "Session is Expired or Invalid",
-          text: "Please Login Again",
-          width: "90%",
-          fontSize: 20,
-          background: "#F3EED9",
-          confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-          color: `${__styledVariables.inputFontColor}`,
-          icon: "error",
-        });
+        __swalErrorMessage(
+          "Session is Expired or Invalid",
+          "Please, Login Again!"
+        );
 
         navigate("/");
       } else {
-        Swal.fire({
-          title: "Something got wrong",
-          text: "Try agains later!",
-          width: "90%",
-          fontSize: 20,
-          background: "#F3EED9",
-          confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-          color: `${__styledVariables.inputFontColor}`,
-          icon: "error",
-        });
+        __swalErrorMessage("Something got wrong", "Please, Try again later!");
       }
+      setStatusLoading(false);
     }
   }
 
   async function handleRate(rate) {
+    setRateLoading(true);
     try {
       await animeService.createRate(auth.token, id, rate);
       setRate(rate);
+      setRateLoading(false);
     } catch (error) {
       if (error.response.status === 401) {
-        Swal.fire({
-          title: "Session is Expired or Invalid",
-          text: "Please Login Again",
-          width: "90%",
-          fontSize: 20,
-          background: "#F3EED9",
-          confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-          color: `${__styledVariables.inputFontColor}`,
-          icon: "error",
-        });
+        __swalErrorMessage(
+          "Session is Expired or Invalid",
+          "Please, Login Again!"
+        );
 
         navigate("/");
       } else {
-        Swal.fire({
-          title: "Something got wrong",
-          text: "Try agains later!",
-          width: "90%",
-          fontSize: 20,
-          background: "#F3EED9",
-          confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-          color: `${__styledVariables.inputFontColor}`,
-          icon: "error",
-        });
+        __swalErrorMessage("Something got wrong", "Please, Try again later!");
       }
+      setRateLoading(false);
     }
   }
 
   async function handleFavorite(favorite) {
+    setFavoriteLoading(true);
     try {
       if (favorite) await animeService.createFavorite(auth.token, id);
       else await animeService.deleteFavorite(auth.token, id);
       setFavorite(favorite);
+      setFavoriteLoading(false);
     } catch (error) {
-      console.log(
-        "🚀 ~ file: Anime.jsx ~ line 139 ~ handleFavorite ~ error",
-        error
-      );
       if (error.response.status === 401) {
-        Swal.fire({
-          title: "Session is Expired or Invalid",
-          text: "Please Login Again",
-          width: "90%",
-          fontSize: 20,
-          background: "#F3EED9",
-          confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-          color: `${__styledVariables.inputFontColor}`,
-          icon: "error",
-        });
+        __swalErrorMessage(
+          "Session is Expired or Invalid",
+          "Please, Login Again!"
+        );
 
         navigate("/");
       } else {
-        Swal.fire({
-          title: "Something got wrong",
-          text: "Try agains later!",
-          width: "90%",
-          fontSize: 20,
-          background: "#F3EED9",
-          confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-          color: `${__styledVariables.inputFontColor}`,
-          icon: "error",
-        });
+        __swalErrorMessage("Something got wrong", "Please, Try again later!");
       }
+      setFavoriteLoading(false);
     }
   }
   return animeInfos ? (
     <>
       <Header />
-      <AnimeWrapper>
-        <Footer position={"top"} />
-        <AnimeStatusFavoriteRate>
-          <FavoriteButton
-            favorite={favorite}
-            setFavorite={(value) => handleFavorite(value)}
-          />
-          <img src={animeInfos.image} alt="Anime" />
-          <AnimeMainInfos>
-            <h2>
-              {animeInfos.avgRate
-                ? `${animeInfos.title} (${animeInfos.avgRate.toFixed(1)})`
-                : animeInfos.title}
-            </h2>
-            <YourRateDiv>
-              <h3>Your Rate</h3>
-              <MoonsRateDiv>
-                {rateIconsValues.map((value) => {
-                  return (
-                    <RateButton
-                      key={value}
-                      value={value}
-                      setRate={(value) => handleRate(value)}
-                      rate={rate}
+      {!pageLoading && animeInfos ? (
+        <AnimeWrapper>
+          <AnimeStatusFavoriteRate>
+            <FavoriteDiv>
+              <FavoriteButton
+                favorite={favorite}
+                setFavorite={(value) => handleFavorite(value)}
+              />
+              {favoriteLoading ? (
+                <Oval
+                  width="25"
+                  height="40"
+                  wrapperClass="favorite-loader"
+                  color={__styledVariables.buttonFontColor}
+                  secondaryColor={__styledVariables.buttonMainColor}
+                  strokeWidth={5}
+                  strokeWidthSecondary={5}
+                />
+              ) : (
+                <></>
+              )}
+            </FavoriteDiv>
+            <img src={animeInfos.image} alt="Anime" />
+            <AnimeMainInfos>
+              <h2>
+                {animeInfos.avgRate
+                  ? `${animeInfos.title} (${animeInfos.avgRate.toFixed(1)})`
+                  : animeInfos.title}
+              </h2>
+              <YourRateDiv>
+                <h3>Your Rate</h3>
+                <MoonsRateDiv>
+                  {rateIconsValues.map((value) => {
+                    return (
+                      <RateButton
+                        disabled={rateLoading}
+                        key={value}
+                        value={value}
+                        setRate={(value) => handleRate(value)}
+                        rate={rate}
+                      />
+                    );
+                  })}
+                  {rateLoading ? (
+                    <Oval
+                      width="30"
+                      height="40"
+                      wrapperClass="rate-loader"
+                      color={__styledVariables.buttonFontColor}
+                      secondaryColor={__styledVariables.buttonMainColor}
+                      strokeWidth={5}
+                      strokeWidthSecondary={5}
                     />
-                  );
-                })}
-              </MoonsRateDiv>
-            </YourRateDiv>
-            <DropDown
-              id="#select-box-status"
-              width="200px"
-              type="Status"
-              array={statusArr}
-              setCallBack={(value) => handleStatus(value)}
-              statusId={currentStatus}
-            />
-            <p className="description-desktop">{animeInfos.description}</p>
-          </AnimeMainInfos>
-        </AnimeStatusFavoriteRate>
-        <AnimeOtherInfos>
-          <p className="description-mobile">{animeInfos.description}</p>
-          <EpisodesDiv>
-            <h4>Episodes</h4>
-            <h5>{animeInfos.episodes}</h5>
-          </EpisodesDiv>
+                  ) : (
+                    <></>
+                  )}
+                </MoonsRateDiv>
+              </YourRateDiv>
+              <StatusDiv>
+                <DropDown
+                  id="#select-box-status"
+                  width="200px"
+                  type="Status"
+                  disabled={statusLoading}
+                  array={statusArr}
+                  setCallBack={(value) => handleStatus(value)}
+                  statusId={currentStatus}
+                />
+                {statusLoading ? (
+                  <Oval
+                    width="25"
+                    height="40"
+                    wrapperClass="status-loader"
+                    color={__styledVariables.buttonFontColor}
+                    secondaryColor={__styledVariables.buttonMainColor}
+                    strokeWidth={5}
+                    strokeWidthSecondary={5}
+                  />
+                ) : (
+                  <></>
+                )}
+              </StatusDiv>
+              <p className="description-desktop">{animeInfos.description}</p>
+            </AnimeMainInfos>
+          </AnimeStatusFavoriteRate>
+          <AnimeOtherInfos>
+            <p className="description-mobile">{animeInfos.description}</p>
+            <EpisodesDiv>
+              <h4>Episodes</h4>
+              <h5>{animeInfos.episodes}</h5>
+            </EpisodesDiv>
 
-          <GenresDiv>
-            <h4>Genres</h4>
-            <Genres>
-              {animeInfos.animesGenres?.map(({ genre }) => {
-                const { name, id } = genre;
-                return <h5 key={id}>{name}</h5>;
-              })}
-            </Genres>
-          </GenresDiv>
-          <AiredDiv>
-            <h4>Aired</h4>
-            <h5>
-              {animeInfos.season.name} {animeInfos.year.year}
-            </h5>
-          </AiredDiv>
-        </AnimeOtherInfos>
-      </AnimeWrapper>
+            <GenresDiv>
+              <h4>Genres</h4>
+              <Genres>
+                {animeInfos.animesGenres?.map(({ genre }) => {
+                  const { name, id } = genre;
+                  return <h5 key={id}>{name}</h5>;
+                })}
+              </Genres>
+            </GenresDiv>
+            <AiredDiv>
+              <h4>Aired</h4>
+              <h5>
+                {animeInfos.season.name} {animeInfos.year.year}
+              </h5>
+            </AiredDiv>
+          </AnimeOtherInfos>
+        </AnimeWrapper>
+      ) : (
+        <LoadingDiv>
+          <FallingLines
+            color={__styledVariables.buttonFontColor}
+            width="150"
+            visible={true}
+            ariaLabel="falling-lines-loading"
+          />
+        </LoadingDiv>
+      )}
+
+      <Footer position={"top"} />
     </>
   ) : (
     <></>
@@ -374,11 +384,25 @@ const YourRateDiv = styled.div`
 
 const MoonsRateDiv = styled.div`
   display: flex;
+  position: relative;
+  .rate-loader {
+    position: absolute;
+    left: 40%;
+    top: -10px;
+    transform: translate(-50%, 0);
+  }
 
   @media (min-width: 800px) {
     align-items: center;
     justify-content: center;
     margin-top: 10px;
+
+    .rate-loader {
+      position: absolute;
+      left: 50%;
+      top: -10px;
+      transform: translate(-50%, 0);
+    }
   }
 `;
 
@@ -483,4 +507,42 @@ const Genres = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  @media (min-width: 800px) {
+    height: calc(100vh - 77px);
+  }
+`;
+
+const FavoriteDiv = styled.div`
+  position: relative;
+
+  .favorite-loader {
+    position: absolute;
+    top: 3px;
+    left: 10px;
+  }
+`;
+
+const StatusDiv = styled.div`
+  position: relative;
+
+  .status-loader {
+    position: absolute;
+    top: 3px;
+    right: 12px;
+  }
+
+  @media (min-width: 800px) {
+    .status-loader {
+      top: 33px;
+      right: 33.5%;
+    }
+  }
 `;

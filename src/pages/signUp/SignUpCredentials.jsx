@@ -10,30 +10,33 @@ import __styledVariables from "../../global/StyledVariables";
 import signUpService from "../../services/signUpService";
 import Swal from "sweetalert2";
 import { TailSpin } from "react-loader-spinner";
+import { __swalErrorMessage } from "../../utils/utils";
 
 export default function SignUpCredentials() {
   const navigate = useNavigate();
-
   const { signUp, setSignUp } = useContext(SignUpContext);
-
-  useEffect(() => {
-    if (signUp?.email && signUp?.password) navigate("/signup/infos");
-  }, [signUp, navigate]);
 
   const [signUpData, setSignUpData] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
+
   const [pageLoading, setPageLoading] = useState(false);
+
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirm: false,
   });
+
   const [validations, setValidations] = useState({
     email: false,
     password: false,
   });
+
+  useEffect(() => {
+    if (signUp?.email && signUp?.password) navigate("/signup/infos");
+  }, [signUp, navigate]);
 
   async function handleForm(e) {
     e.preventDefault();
@@ -62,28 +65,10 @@ export default function SignUpCredentials() {
         navigate("/signup/infos");
       } catch (e) {
         if (e.response.status === 409) {
-          Swal.fire({
-            title: "Invalid Email",
-            text: "This email isn't available",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage("Invalid Email", "This email isn't available!");
           setPageLoading(false);
         } else {
-          Swal.fire({
-            title: "Something got wrong",
-            text: "Try agains later!",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage("Something got wrong", "Please, try again later!");
           setPageLoading(false);
         }
       }

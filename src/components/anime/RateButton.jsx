@@ -1,13 +1,15 @@
 import { BsMoonFill } from "react-icons/bs";
 import styled from "styled-components";
 
-export default function RateButton({ value, setRate, rate }) {
+export default function RateButton({ value, setRate, rate, disabled }) {
   return (
     <IconWrapper rate={rate} value={value}>
       <BsMoonFill
         value={value}
         className="moon-rate"
-        onClick={() => setRate(value)}
+        onClick={() => {
+          if (!disabled) setRate(value);
+        }}
       />
     </IconWrapper>
   );

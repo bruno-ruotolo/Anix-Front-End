@@ -1,7 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Swal from "sweetalert2";
 import { AuthContext } from "../../contexts/AuthContext";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import Scroll from "react-scroll";
@@ -10,9 +9,10 @@ import __styledVariables from "../../global/StyledVariables";
 
 import homeService from "../../services/homeService";
 import AnimeComponent from "../AnimeComponent";
+import { __swalErrorMessage } from "../../utils/utils";
+import { FallingLines } from "react-loader-spinner";
 
 export default function MostPopular() {
-  const Element = Scroll.Element;
   const scroll = Scroll.animateScroll;
 
   const { auth } = useContext(AuthContext);
@@ -20,36 +20,26 @@ export default function MostPopular() {
   const ref = useRef(null);
 
   const [popularAnime, setPopularAnime] = useState([]);
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
+    setPageLoading(true);
     (async () => {
       try {
         const animesList = await homeService.getPopular(auth.token);
         setPopularAnime(animesList);
+        setPageLoading(false);
       } catch (error) {
         if (error.response.status === 401) {
-          Swal.fire({
-            title: "Session is Expired or Invalid",
-            text: "Please Login Again",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage(
+            "Session is Expired or Invalid",
+            "Please, Login Again!"
+          );
+          setPageLoading(false);
           navigate("/");
         } else {
-          Swal.fire({
-            title: "Something got wrong",
-            text: "Try agains later!",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage("Something got wrong", "Please, Try again later!");
+          setPageLoading(false);
         }
       }
     })();
@@ -71,24 +61,35 @@ export default function MostPopular() {
       <PopularTitleDiv>
         <h1>Most Popular</h1>
       </PopularTitleDiv>
-      <PopularAnimes id={"most-popular-animes-list"} ref={ref}>
-        {popularAnime.map((anime, index) => {
-          const { id, image, title } = anime;
-          return (
-            <AnimeComponent key={id} image={image} title={title} id={id} />
-          );
-        })}
+      {!pageLoading ? (
+        <PopularAnimes id={"most-popular-animes-list"} ref={ref}>
+          {popularAnime.map((anime, index) => {
+            const { id, image, title } = anime;
+            return (
+              <AnimeComponent key={id} image={image} title={title} id={id} />
+            );
+          })}
 
-        <FaArrowAltCircleRight
-          className="scroll-arrow-right-class"
-          onClick={() => handleScroll(true)}
-        />
+          <FaArrowAltCircleRight
+            className="scroll-arrow-right-class"
+            onClick={() => handleScroll(true)}
+          />
 
-        <FaArrowAltCircleLeft
-          className="scroll-arrow-left-class"
-          onClick={() => handleScroll(false)}
-        />
-      </PopularAnimes>
+          <FaArrowAltCircleLeft
+            className="scroll-arrow-left-class"
+            onClick={() => handleScroll(false)}
+          />
+        </PopularAnimes>
+      ) : (
+        <LoadingDiv>
+          <FallingLines
+            color={__styledVariables.buttonFontColor}
+            width="130"
+            visible={true}
+            ariaLabel="falling-lines-loading"
+          />
+        </LoadingDiv>
+      )}
     </PopularWrapper>
   );
 }
@@ -192,6 +193,21 @@ const PopularAnimes = styled.div`
     .scroll-arrow-right-class {
       font-size: 35px;
       right: 50px;
+    }
+  }
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+
+  @media (min-width: 800px) {
+    height: 200px;
+
+    svg {
+      width: 150px;
     }
   }
 `;

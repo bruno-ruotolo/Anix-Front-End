@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
+import { FallingLines } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Swal from "sweetalert2";
 import { AuthContext } from "../../contexts/AuthContext";
 import __styledVariables from "../../global/StyledVariables";
 import searchService from "../../services/searchService";
+import { __swalErrorMessage } from "../../utils/utils";
 import SelectBox from "../SelectBox";
 
 export default function SearchHeader({ setSearchParams, searchParams }) {
@@ -14,40 +15,28 @@ export default function SearchHeader({ setSearchParams, searchParams }) {
   const [yearsList, setYearsList] = useState([]);
   const [genresList, setGeresList] = useState([]);
   const [inputHeader, setInputHeader] = useState("");
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
+    setPageLoading(true);
     (async () => {
       try {
         const resultYear = await searchService.getAllYears(auth.token);
         setYearsList(resultYear);
         const resultGenre = await searchService.getAllGenres(auth.token);
         setGeresList(resultGenre);
+        setPageLoading(false);
       } catch (error) {
         if (error.response.status === 401) {
-          Swal.fire({
-            title: "Session is Expired or Invalid",
-            text: "Please Login Again",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
-
+          __swalErrorMessage(
+            "Session is Expired or Invalid",
+            "Please, Login Again!"
+          );
           navigate("/");
         } else {
-          Swal.fire({
-            title: "Something got wrong",
-            text: "Try agains later!",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage("Something got wrong", "Please, Try again later!");
         }
+        setPageLoading(false);
       }
     })();
   }, [auth.token, navigate]);
@@ -68,7 +57,8 @@ export default function SearchHeader({ setSearchParams, searchParams }) {
         s: inputHeader,
       });
   }, [inputHeader, searchParams]);
-  return yearsList.length > 0 && genresList.length > 0 ? (
+
+  return (
     <HeaderWrapper>
       <input
         className="search-input"
@@ -77,41 +67,63 @@ export default function SearchHeader({ setSearchParams, searchParams }) {
           setInputHeader(e.target.value);
         }}
       />
+
       <SelectBoxesContainer>
-        <SelectBox
-          setSelectedItem={(value) => {
-            if (searchParams.has("g") && value)
-              setSearchParams({ g: searchParams.get("g"), y: value.id });
-            else if (value) setSearchParams({ y: value.id });
-            else if (!value && searchParams.has("g"))
-              setSearchParams({ g: searchParams.get("g"), y: "" });
-            else setSearchParams({ y: "" });
-          }}
-          height="35px"
-          width="110px"
-          placeholder="Year"
-          type="number"
-          list={yearsList}
-        />
-        <SelectBox
-          id="select-box-genre"
-          height="35px"
-          width="200px"
-          placeholder="Genre"
-          setSelectedItem={(value) => {
-            if (searchParams.has("y") && value)
-              setSearchParams({ y: searchParams.get("y"), g: value.id });
-            else if (value) setSearchParams({ g: value.id });
-            else if (!value && searchParams.has("y"))
-              setSearchParams({ y: searchParams.get("y"), g: "" });
-            else setSearchParams({ g: "" });
-          }}
-          list={genresList}
-        />
+        {!pageLoading ? (
+          <SelectBox
+            setSelectedItem={(value) => {
+              if (searchParams.has("g") && value)
+                setSearchParams({ g: searchParams.get("g"), y: value.id });
+              else if (value) setSearchParams({ y: value.id });
+              else if (!value && searchParams.has("g"))
+                setSearchParams({ g: searchParams.get("g"), y: "" });
+              else setSearchParams({ y: "" });
+            }}
+            height="35px"
+            width="110px"
+            placeholder="Year"
+            type="number"
+            list={yearsList}
+          />
+        ) : (
+          <LoadingDiv>
+            <FallingLines
+              color={__styledVariables.buttonFontColor}
+              width="50px"
+              visible={true}
+              ariaLabel="falling-lines-loading"
+            />
+          </LoadingDiv>
+        )}
+
+        {!pageLoading ? (
+          <SelectBox
+            id="select-box-genre"
+            height="35px"
+            width="200px"
+            placeholder="Genre"
+            setSelectedItem={(value) => {
+              if (searchParams.has("y") && value)
+                setSearchParams({ y: searchParams.get("y"), g: value.id });
+              else if (value) setSearchParams({ g: value.id });
+              else if (!value && searchParams.has("y"))
+                setSearchParams({ y: searchParams.get("y"), g: "" });
+              else setSearchParams({ g: "" });
+            }}
+            list={genresList}
+          />
+        ) : (
+          <LoadingDiv>
+            <FallingLines
+              color={__styledVariables.buttonFontColor}
+              width="50"
+              visible={true}
+              ariaLabel="falling-lines-loading"
+            />
+          </LoadingDiv>
+        )}
       </SelectBoxesContainer>
     </HeaderWrapper>
-  ) : (
-    <></>
   );
 }
 
@@ -163,5 +175,16 @@ const SelectBoxesContainer = styled.div`
         }
       }
     }
+  }
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  width: 100px;
+  @media (min-width: 800px) {
+    width: 200px;
   }
 `;

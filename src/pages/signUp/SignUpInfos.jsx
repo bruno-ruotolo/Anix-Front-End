@@ -10,18 +10,20 @@ import __styledVariables from "../../global/StyledVariables";
 import DropDown from "../../components/DropDown";
 import signUpService from "../../services/signUpService";
 import { TailSpin } from "react-loader-spinner";
+import { __swalErrorMessage } from "../../utils/utils";
 
 export default function SignUpInfos() {
   const navigate = useNavigate();
-
   const { signUp, setSignUp } = useContext(SignUpContext);
 
   const [gendersArr, setGendersArr] = useState();
+
   const [signUpData, setSignUpData] = useState({
     username: "",
     image: "",
     genderId: "",
   });
+
   const [pageLoading, setPageLoading] = useState(true);
 
   useEffect(() => {
@@ -41,9 +43,7 @@ export default function SignUpInfos() {
         setPageLoading(false);
         setGendersArr(promise);
       } catch (e) {
-        console.log(
-          "Something Went Wrong on TryCatch Block (DropDown.jsx [12])"
-        );
+        __swalErrorMessage("Something got wrong", "Please, try again later!");
         setPageLoading(false);
       }
     }

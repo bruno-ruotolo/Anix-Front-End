@@ -7,35 +7,38 @@ import jwt_decode from "jwt-decode";
 import AnixLogo from "../../assets/AnixLogo.png";
 import __styledVariables from "../../global/StyledVariables";
 import signUpService from "../../services/signUpService";
-import Swal from "sweetalert2";
 import { AuthContext } from "../../contexts/AuthContext";
 import { TailSpin } from "react-loader-spinner";
+import { __swalErrorMessage } from "../../utils/utils";
 
 export default function SignIn() {
   const navigate = useNavigate();
-
   const { setAuth, auth } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (auth.id) navigate("/home");
-  }, [auth, navigate]);
 
   const [signInData, setSignInData] = useState({
     email: "",
     password: "",
   });
+
   const [pageLoading, setPageLoading] = useState(false);
+
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirm: false,
   });
+
   const [validations, setValidations] = useState({
     email: false,
     password: false,
   });
 
+  useEffect(() => {
+    if (auth.id) navigate("/home");
+  }, [auth, navigate]);
+
   async function handleForm(e) {
     e.preventDefault();
+    setPageLoading(true);
     setValidations({ ...validations, password: true });
 
     try {
@@ -44,30 +47,18 @@ export default function SignIn() {
       localStorage.setItem("auth", token);
       const userInfos = token ? jwt_decode(token) : null;
       setAuth({ ...userInfos, token });
+      setPageLoading(false);
       navigate("/home");
     } catch (e) {
       if (e.response.status === 401) {
-        Swal.fire({
-          title: "Invalid Email/Password",
-          width: "90%",
-          fontSize: 20,
-          background: "#F3EED9",
-          confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-          color: `${__styledVariables.inputFontColor}`,
-          icon: "error",
-        });
+        __swalErrorMessage(
+          "Invalid Email/Password",
+          "Please, check your informations and try again"
+        );
       } else {
-        Swal.fire({
-          title: "Something got wrong",
-          text: "Try agains later!",
-          width: "90%",
-          fontSize: 20,
-          background: "#F3EED9",
-          confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-          color: `${__styledVariables.inputFontColor}`,
-          icon: "error",
-        });
+        __swalErrorMessage("Something got wrong", "Please, try again later!");
       }
+      setPageLoading(false);
     }
   }
 
