@@ -161,6 +161,12 @@ const PopularAnimes = styled.div`
     color: ${__styledVariables.buttonFontColor};
     font-size: 25px;
     overflow: scroll;
+    transition: 0.3s;
+
+    &:hover {
+      transform: translate(8px, -3px);
+      filter: drop-shadow(-4px 4px 2px #000000);
+    }
   }
 
   .scroll-arrow-left-class {
@@ -169,9 +175,14 @@ const PopularAnimes = styled.div`
     left: 30px;
     filter: drop-shadow(0px 0px 5px black);
     color: ${__styledVariables.buttonFontColor};
-
     font-size: 25px;
     overflow: scroll;
+    transition: 0.3s;
+
+    &:hover {
+      transform: translate(-8px, -3px);
+      filter: drop-shadow(4px 4px 2px #000000);
+    }
   }
 
   &::-webkit-scrollbar {
@@ -188,11 +199,13 @@ const PopularAnimes = styled.div`
     .scroll-arrow-left-class {
       font-size: 35px;
       left: 50px;
+      filter: none;
     }
 
     .scroll-arrow-right-class {
       font-size: 35px;
       right: 50px;
+      filter: none;
     }
   }
 `;

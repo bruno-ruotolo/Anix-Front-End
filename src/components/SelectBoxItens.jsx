@@ -6,12 +6,16 @@ export default function SelectBoxItens({
   name,
   id,
   setSelectedItem,
+  setIsActive,
 }) {
   return (
     <SelectItemWrapper
       searchItem={searchItem}
       name={name}
-      onMouseDown={() => setSelectedItem({ id, name })}
+      onMouseDown={() => {
+        setSelectedItem({ id, name });
+        setIsActive(false);
+      }}
     >
       <p id={id}>{name}</p>
     </SelectItemWrapper>

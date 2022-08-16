@@ -150,8 +150,15 @@ const ProfileWrapper = styled.main`
     right: 20px;
     font-size: 30px;
     color: ${__styledVariables.buttonFontColor};
+    transition: 0.5s;
     filter: drop-shadow(4px 4px 2px #000000);
+
     cursor: pointer;
+
+    &:hover {
+      filter: drop-shadow(4px 4px 2px #000000);
+      transform: translateX(-10px);
+    }
   }
 
   hr {
@@ -160,11 +167,13 @@ const ProfileWrapper = styled.main`
     margin-top: 50px;
   }
 
-  @media (min-width: 800px) {
+  @media (min-width: 933px) {
     min-height: calc(100vh - 77px);
+
     .logout-icon {
       font-size: 40px;
       right: 10%;
+      filter: none;
     }
 
     h3 {
@@ -174,7 +183,7 @@ const ProfileWrapper = styled.main`
     }
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 933px) {
     hr {
       display: none;
     }
@@ -202,7 +211,7 @@ const UserInfos = styled.article`
     color: ${__styledVariables.buttonFontColor};
   }
 
-  @media (min-width: 800px) {
+  @media (min-width: 933px) {
     img {
       width: 150px;
       height: 150px;
@@ -221,7 +230,7 @@ const ProfileAnimeInfosContainer = styled.article`
   display: flex;
   flex-direction: column;
 
-  @media (min-width: 800px) {
+  @media (min-width: 933px) {
     width: 100%;
     max-width: 700px;
     align-items: center;
@@ -240,7 +249,7 @@ const AnimesInfos = styled.div`
   justify-content: space-evenly;
   margin-top: 20px;
 
-  @media (min-width: 800px) {
+  @media (min-width: 933px) {
     width: 100%;
     align-items: center;
     justify-content: space-evenly;
@@ -255,7 +264,7 @@ const FavoriteAnimes = styled.div`
   padding-top: 15px;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  transition: 0.5s;
+
   padding-right: 7px;
 
   p {
@@ -299,7 +308,7 @@ const InfosContainer = styled.div`
     text-shadow: 4px 4px 3px rgba(0, 0, 0, 0.55);
   }
 
-  @media (min-width: 800px) {
+  @media (min-width: 933px) {
     h4 {
       font-size: 25px;
       margin-bottom: 10px;
@@ -314,7 +323,7 @@ const InfosContainer = styled.div`
 `;
 
 const ProfileWrapperDesktop = styled.div`
-  @media (min-width: 800px) {
+  @media (min-width: 933px) {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -328,7 +337,7 @@ const LoadingDiv = styled.div`
   justify-content: center;
   height: 100vh;
 
-  @media (min-width: 800px) {
+  @media (min-width: 933px) {
     height: calc(100vh - 77px);
   }
 `;

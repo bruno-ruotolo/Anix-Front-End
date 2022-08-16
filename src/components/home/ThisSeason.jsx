@@ -60,7 +60,7 @@ export default function ThisSeason() {
     <SeasonWrapper>
       <hr />
       <SeasonTitleDiv>
-        <h1>This Season</h1>
+        <h1 onClick={() => navigate("/season")}>This Season</h1>
         <BsFillPlusSquareFill
           className="plus-icon"
           id="plus-icon-season"
@@ -137,6 +137,14 @@ const SeasonTitleDiv = styled.div`
     color: ${__styledVariables.buttonFontColor};
     font-size: 28px;
     cursor: pointer;
+    transition: 0.3s;
+
+    filter: drop-shadow(2px 2px 2px #000000);
+
+    &:hover {
+      transform: translate(-8px, -3px);
+      filter: drop-shadow(4px 4px 2px #000000);
+    }
   }
 
   h1 {
@@ -147,11 +155,16 @@ const SeasonTitleDiv = styled.div`
     font-size: 24px;
     line-height: 27px;
     color: ${__styledVariables.inputMainColor};
+    cursor: pointer;
   }
 
   @media (min-width: 800px) {
     h1 {
       font-size: 30px;
+    }
+
+    .plus-icon {
+      filter: none;
     }
   }
 `;
@@ -163,7 +176,7 @@ const SeasonAnimes = styled.div`
   margin-top: 10px;
   transition: 0.5s;
 
-  overflow: scroll;
+  overflow: hidden;
 
   .scroll-arrow-right-class {
     cursor: pointer;
@@ -173,6 +186,12 @@ const SeasonAnimes = styled.div`
     font-size: 25px;
     overflow: scroll;
     filter: drop-shadow(0px 0px 5px black);
+    transition: 0.3s;
+
+    &:hover {
+      transform: translate(8px, -3px);
+      filter: drop-shadow(-4px 4px 2px #000000);
+    }
   }
 
   .scroll-arrow-left-class {
@@ -183,6 +202,12 @@ const SeasonAnimes = styled.div`
     font-size: 25px;
     overflow: scroll;
     filter: drop-shadow(0px 0px 5px black);
+    transition: 0.3s;
+
+    &:hover {
+      transform: translate(-8px, -3px);
+      filter: drop-shadow(4px 4px 2px #000000);
+    }
   }
 
   &::-webkit-scrollbar {
@@ -199,11 +224,13 @@ const SeasonAnimes = styled.div`
     .scroll-arrow-left-class {
       font-size: 35px;
       left: 50px;
+      filter: none;
     }
 
     .scroll-arrow-right-class {
       font-size: 35px;
       right: 50px;
+      filter: none;
     }
   }
 `;

@@ -9,66 +9,67 @@ import { AuthContext } from "../../contexts/AuthContext";
 import __styledVariables from "../../global/StyledVariables";
 import homeService from "../../services/homeService";
 import Header from "../../components/Header";
+import { __swalErrorMessage } from "../../utils/utils";
+import { FallingLines } from "react-loader-spinner";
 
 export default function Season() {
   const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [seasonAnimes, setSeasonAnimes] = useState([]);
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
+    setPageLoading(true);
     (async () => {
       try {
         const response = await homeService.getSeason(auth.token);
         setSeasonAnimes(response);
+        setPageLoading(false);
       } catch (error) {
         if (error.response === 401) {
-          Swal.fire({
-            title: "Session is Expired or Invalid",
-            text: "Please Login Again",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage(
+            "Session is Expired or Invalid",
+            "Please, Login Again!"
+          );
 
           navigate("/");
         } else {
-          Swal.fire({
-            title: "Something got wrong",
-            text: "Try agains later!",
-            width: "90%",
-            fontSize: 20,
-            background: "#F3EED9",
-            confirmButtonColor: `${__styledVariables.buttonMainColor}`,
-            color: `${__styledVariables.inputFontColor}`,
-            icon: "error",
-          });
+          __swalErrorMessage("Something got wrong", "Please, Try again later!");
         }
+        setPageLoading(false);
       }
     })();
   }, [navigate, auth.token, auth.id]);
 
-  return seasonAnimes.length > 0 ? (
+  return (
     <>
       <Header />
+
       <SeasonWrapper>
         <h2>Summer 2022</h2>
-        <SeasonListContainer>
-          {seasonAnimes.map((seasonAnime) => {
-            const { id, title, image } = seasonAnime;
-            return (
-              <AnimeComponent key={id} id={id} title={title} image={image} />
-            );
-          })}
-        </SeasonListContainer>
+        {!pageLoading ? (
+          <SeasonListContainer>
+            {seasonAnimes.map((seasonAnime) => {
+              const { id, title, image } = seasonAnime;
+              return (
+                <AnimeComponent key={id} id={id} title={title} image={image} />
+              );
+            })}
+          </SeasonListContainer>
+        ) : (
+          <LoadingDiv>
+            <FallingLines
+              color={__styledVariables.buttonFontColor}
+              width="150"
+              visible={true}
+              ariaLabel="falling-lines-loading"
+            />
+          </LoadingDiv>
+        )}
       </SeasonWrapper>
       <Footer />
     </>
-  ) : (
-    <></>
   );
 }
 
@@ -117,7 +118,6 @@ const SeasonListContainer = styled.section`
   padding-top: 15px;
   justify-content: space-around;
   flex-wrap: wrap;
-  transition: 0.5s;
   padding-right: 7px;
   margin-top: 20px;
 
@@ -132,5 +132,16 @@ const SeasonListContainer = styled.section`
     img {
       margin-bottom: 25px;
     }
+  }
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 400px);
+
+  @media (min-width: 800px) {
+    height: calc(100vh - 400px);
   }
 `;

@@ -39,7 +39,10 @@ export default function SelectBox({
       >
         <InputDiv height={height}>
           {isActive ? (
-            <FaSearch className="search-icon" />
+            <FaSearch
+              onClick={() => setIsActive(false)}
+              className="search-icon"
+            />
           ) : (
             <IoMdArrowDropdown
               onClick={() => setIsActive(true)}
@@ -67,6 +70,7 @@ export default function SelectBox({
                 key={id}
                 name={name || year}
                 id={id}
+                setIsActive={(value) => setIsActive(value)}
                 setSelectedItem={(value) => {
                   setSelectedItem(value);
                   setInput(value.name);
@@ -114,6 +118,7 @@ const SelectList = styled.div`
   padding: 0 10px;
   max-height: 400px;
   overflow: scroll;
+  overflow-x: hidden;
 
   @media (max-width: 800px) {
     max-width: 200px;

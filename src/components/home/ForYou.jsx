@@ -88,6 +88,7 @@ const ForYouWrapper = styled.section`
   margin-top: 20px;
   padding: 0 23px;
   max-width: 1000px;
+  width: fit-content;
 
   h1 {
     margin-bottom: 5px;
@@ -99,10 +100,21 @@ const ForYouWrapper = styled.section`
     color: ${__styledVariables.inputMainColor};
   }
 
-  @media (min-width: 800px) {
+  @media (min-width: 1500px) {
     flex-wrap: wrap;
     left: 50%;
     transform: translate(50%, 0);
+    margin-top: 30px;
+
+    h1 {
+      font-size: 33px;
+      margin-bottom: 25px;
+    }
+  }
+
+  @media (min-width: 1002px) {
+    flex-wrap: wrap;
+    padding-left: 100px;
     margin-top: 30px;
 
     h1 {
@@ -126,11 +138,12 @@ const ForYouInfosDiv = styled.div`
     transition: 0.5s;
 
     &:hover {
-      filter: brightness(0.7);
+      filter: brightness(0.8);
+      transform: scale(1.05);
     }
   }
 
-  @media (min-width: 800px) {
+  @media (min-width: 1002px) {
     img {
       min-width: 210px;
       height: 277px;
@@ -176,7 +189,7 @@ const AnimeTextInfosDiv = styled.div`
     color: ${__styledVariables.inputMainColor};
     text-align: justify;
   }
-  @media (max-width: 800px) {
+  @media (max-width: 1002px) {
     .title-desktop {
       display: none;
     }
@@ -186,7 +199,7 @@ const AnimeTextInfosDiv = styled.div`
     }
   }
 
-  @media (min-width: 800px) {
+  @media (min-width: 1002px) {
     height: 250px;
 
     .description-mobile {
@@ -221,7 +234,7 @@ const LoadingDiv = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media (min-width: 800px) {
+  @media (min-width: 1002px) {
     height: 400px;
   }
 `;

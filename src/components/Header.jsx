@@ -88,26 +88,12 @@ const HeaderWrapper = styled.header`
   .logo-image {
     width: 80px;
     min-height: 53px;
+    transition: 1s;
 
     &:hover {
-      animation-name: rotate;
-      animation-duration: 1s;
-      animation-iteration-count: infinite;
-    }
-  }
+      transform: skewX(5deg) rotateY(20deg);
 
-  @keyframes rotate {
-    0% {
-      transform: rotateY(0);
-      transform: rotate3d();
-    }
-
-    50% {
-      transform: rotateY(180deg);
-    }
-
-    100% {
-      transform: rotateY(360deg);
+      filter: drop-shadow(-4px 4px 2px ${__styledVariables.mainColor});
     }
   }
 

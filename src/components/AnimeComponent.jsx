@@ -25,7 +25,8 @@ const AnimeWrapper = styled.section`
   }
 
   &:hover {
-    filter: brightness(0.7);
+    filter: brightness(0.8);
+    transform: scale(1.1);
   }
 
   @media (min-width: 800px) {

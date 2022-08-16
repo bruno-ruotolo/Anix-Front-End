@@ -121,7 +121,7 @@ export default function Anime() {
       setFavoriteLoading(false);
     }
   }
-  return animeInfos ? (
+  return (
     <>
       <Header />
       {!pageLoading && animeInfos ? (
@@ -246,8 +246,6 @@ export default function Anime() {
 
       <Footer position={"top"} />
     </>
-  ) : (
-    <></>
   );
 }
 
