@@ -11,6 +11,8 @@ Cypress.Commands.add("resetAllData", () => {
 
 Cypress.Commands.add("createUser", (userInformations, userFavoriteGenres) => {
   cy.log("Creating User");
+  cy.log(userInformations.email);
+  cy.log(userInformations.password);
   cy.request("POST", `http://localhost:5000/signup`, {
     ...userInformations,
     ...userFavoriteGenres,
@@ -21,7 +23,7 @@ Cypress.Commands.add("createUser", (userInformations, userFavoriteGenres) => {
 
 Cypress.Commands.add("loginUser", (userInformations, URI) => {
   cy.log("Login User");
-  cy.visit(`${URI}/`);
+  cy.visit(`${URI}/signin`);
   cy.get("#signin-email").type(userInformations.email);
   cy.get("#signin-password").type(userInformations.password);
 

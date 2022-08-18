@@ -11,7 +11,7 @@ beforeEach(() => {
 
 describe("Create User Test Suite", () => {
   it("should navigate to signUp page", () => {
-    cy.visit(`${URI}/`);
+    cy.visit(`${URI}/signin`);
     cy.get("#navigate-signup").click();
 
     cy.url().should("equal", `${URI}/signup`);
@@ -28,7 +28,7 @@ describe("Create User Test Suite", () => {
       genderId: Math.ceil(Math.random() * GENDER_QUANTITY),
     };
 
-    cy.visit(`${URI}/`);
+    cy.visit(`${URI}/signin`);
     cy.get("#navigate-signup").click();
 
     cy.get("#signup-email").type(userInformations.email);
@@ -66,10 +66,10 @@ describe("Create User Test Suite", () => {
     cy.get("#signup-genre-button").click();
     cy.wait("@createUser");
 
-    cy.url().should("equal", `${URI}/`);
+    cy.url().should("equal", `${URI}/signin`);
 
     it("navigate throw pages", () => {
-      cy.visit(`${URI}/`);
+      cy.visit(`${URI}/signin`);
       cy.get("#navigate-signup").click();
       cy.url().should("equal", `${URI}/signup`);
       cy.get("#navigate-signin").click();
@@ -97,9 +97,8 @@ describe("Login User Test Suite", () => {
       thirdGenreId: Math.ceil(Math.random() * GENRE_QUANTITY),
     };
 
-    cy.visit(`${URI}/`);
-
     cy.createUser(userInformations, userFavoriteGenres);
+    cy.visit(`${URI}/signin`);
 
     cy.get("#signin-email").type(userInformations.email);
     cy.get("#signin-password").type(userInformations.password);

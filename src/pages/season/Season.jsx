@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Swal from "sweetalert2";
 import AnimeComponent from "../../components/AnimeComponent";
 
 import Footer from "../../components/Footer";

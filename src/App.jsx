@@ -14,6 +14,7 @@ import UserStatusAnime from "./pages/userStatusAnime/UserStatusAnime";
 import Profile from "./pages/profile/Profile";
 import Season from "./pages/season/Season";
 import Search from "./pages/search/Search";
+import Welcome from "./pages/welcome/Welcome";
 
 export default function App() {
   return (
@@ -22,7 +23,8 @@ export default function App() {
         <BrowserRouter>
           <GlobalStyled />
           <Routes>
-            <Route path="/" element={<SignIn />} />
+            <Route path="/" element={<Welcome />} />
+            <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUpCredentials />} />
             <Route path="/signup/infos" element={<SignUpInfos />} />
             <Route path="/signup/genres" element={<SignUpGenres />} />

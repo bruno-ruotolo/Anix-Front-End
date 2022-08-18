@@ -139,7 +139,6 @@ const AnimesContainer = styled.section`
   padding-left: 18px;
   justify-content: space-between;
   flex-wrap: wrap;
-  /* transition: 0.5s; */
 
   img {
     margin-bottom: 15px;

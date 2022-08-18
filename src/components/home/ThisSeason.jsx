@@ -176,7 +176,8 @@ const SeasonAnimes = styled.div`
   margin-top: 10px;
   transition: 0.5s;
 
-  overflow: hidden;
+  overflow-x: scroll;
+  overflow-y: hidden;
 
   .scroll-arrow-right-class {
     cursor: pointer;

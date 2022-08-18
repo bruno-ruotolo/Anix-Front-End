@@ -151,7 +151,8 @@ const PopularAnimes = styled.div`
   align-items: center;
   margin-top: 10px;
 
-  overflow: scroll;
+  overflow-x: scroll;
+  overflow-y: hidden;
 
   .scroll-arrow-right-class {
     cursor: pointer;
