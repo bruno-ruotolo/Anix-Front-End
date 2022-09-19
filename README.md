@@ -1,6 +1,6 @@
 <br />
 <div align="center">
-    <img src="./.github/assets/AnixLogo.png" alt="Anix Logo" width="150">
+    <img src="./.github/assets/AnixLogo.png" alt="Anix Logo" width="300">
     <h3 align="center">Anix</h3>
     <p> A personal anime manager
 </div>
