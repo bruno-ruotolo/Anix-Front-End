@@ -4,6 +4,9 @@
     <h3 align="center">Anix</h3>
     <p> A personal anime manager
 </div>
+<div align="center">
+    <a href="https://anix-front-end.vercel.app" target="_blank">Anix's Webpage<a/>
+</div>
 
 # About
 Do you remember all the animes you've watched? Depending on the amount, it's an almost impossible task, so Anix came to help you quickly and intuitively. Manage the status of your anime, favorite and discover new ones.
