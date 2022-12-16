@@ -39,8 +39,9 @@ export default function ThisSeason() {
           setPageLoading(false);
           navigate("/");
         } else {
-          __swalErrorMessage("Something got wrong", "Please, Try again later!");
+          __swalErrorMessage("Something got wrong", "Please, Try to login again!");
           setPageLoading(false);
+          navigate("/");
         }
       }
     })();
