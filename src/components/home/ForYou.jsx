@@ -40,11 +40,14 @@ export default function ForYou() {
           navigate("/");
           setPageLoading(false);
         } else {
-          __swalErrorMessage("Something got wrong", "Please, Try to login again!");
+          __swalErrorMessage(
+            "Something got wrong",
+            "Please, Try to login again!"
+          );
           localStorage.removeItem("auth");
-          navigate("/");
+          setPageLoading(false);
+          window.location.reload();
         }
-        setPageLoading(false);
       }
     })();
   }, [auth.token, navigate]);

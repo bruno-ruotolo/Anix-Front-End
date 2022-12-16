@@ -35,6 +35,8 @@ export default function SearchHeader({ setSearchParams, searchParams }) {
           navigate("/");
         } else {
           __swalErrorMessage("Something got wrong", "Please, Try again later!");
+          localStorage.removeItem("auth");
+          window.location.reload();
         }
         setPageLoading(false);
       }

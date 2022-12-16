@@ -38,11 +38,6 @@ export default function ThisSeason() {
           );
           setPageLoading(false);
           navigate("/");
-        } else {
-          __swalErrorMessage("Something got wrong", "Please, Try to login again!");
-          setPageLoading(false);
-          localStorage.removeItem("auth");
-          navigate("/");
         }
       }
     })();
