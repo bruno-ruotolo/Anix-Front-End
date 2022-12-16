@@ -40,7 +40,7 @@ export default function ForYou() {
           navigate("/");
           setPageLoading(false);
         } else {
-          __swalErrorMessage("Something got wrong", "Please, Try again later!");
+          __swalErrorMessage("Something got wrong", "Please, Try to login again!");
           navigate("/");
         }
         setPageLoading(false);
