@@ -41,6 +41,7 @@ export default function ForYou() {
           setPageLoading(false);
         } else {
           __swalErrorMessage("Something got wrong", "Please, Try to login again!");
+          localStorage.removeItem("auth");
           navigate("/");
         }
         setPageLoading(false);
