@@ -41,6 +41,7 @@ export default function ThisSeason() {
         } else {
           __swalErrorMessage("Something got wrong", "Please, Try to login again!");
           setPageLoading(false);
+          localStorage.removeItem("auth");
           navigate("/");
         }
       }
