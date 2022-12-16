@@ -39,6 +39,7 @@ export default function MostPopular() {
           navigate("/");
         } else {
           __swalErrorMessage("Something got wrong", "Please, Try again later!");
+          navigate("/");
           setPageLoading(false);
         }
       }
