@@ -5,12 +5,11 @@ import styled from "styled-components";
 import { AuthContext } from "../../contexts/AuthContext";
 import __styledVariables from "../../global/StyledVariables";
 import searchService from "../../services/searchService";
-import { __swalErrorMessage } from "../../utils/utils";
 import SelectBox from "../SelectBox";
 
 export default function SearchHeader({ setSearchParams, searchParams }) {
   const navigate = useNavigate();
-  const { auth } = useContext(AuthContext);
+  const { setAuth, auth } = useContext(AuthContext);
 
   const [yearsList, setYearsList] = useState([]);
   const [genresList, setGeresList] = useState([]);
@@ -27,21 +26,13 @@ export default function SearchHeader({ setSearchParams, searchParams }) {
         setGeresList(resultGenre);
         setPageLoading(false);
       } catch (error) {
-        if (error.response.status === 401) {
-          __swalErrorMessage(
-            "Session is Expired or Invalid",
-            "Please, Login Again!"
-          );
-          navigate("/");
-        } else {
-          __swalErrorMessage("Something got wrong", "Please, Try again later!");
-          localStorage.removeItem("auth");
-          window.location.reload();
-        }
         setPageLoading(false);
+        setAuth("");
+        localStorage.removeItem("auth");
+        navigate("/");
       }
     })();
-  }, [auth.token, navigate]);
+  }, [auth.token, navigate, setAuth]);
 
   useEffect(() => {
     if (searchParams.has("g") && !searchParams.has("y"))

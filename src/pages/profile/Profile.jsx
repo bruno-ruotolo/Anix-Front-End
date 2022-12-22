@@ -9,7 +9,6 @@ import __styledVariables from "../../global/StyledVariables";
 import profileService from "../../services/profileService";
 import AnimeComponent from "../../components/AnimeComponent";
 import Header from "../../components/Header";
-import { __swalErrorMessage } from "../../utils/utils";
 import { FallingLines } from "react-loader-spinner";
 
 export default function Profile() {
@@ -27,22 +26,13 @@ export default function Profile() {
         setProfileInfos(response);
         setPageLoading(false);
       } catch (error) {
-        if (error.response === 401) {
-          __swalErrorMessage(
-            "Session is Expired or Invalid",
-            "Please, Login Again!"
-          );
-
-          navigate("/");
-        } else {
-          __swalErrorMessage("Something got wrong", "Please, Try again later!");
-          localStorage.removeItem("auth");
-          window.location.reload();
-        }
         setPageLoading(false);
+        setAuth("");
+        localStorage.removeItem("auth");
+        navigate("/");
       }
     })();
-  }, [navigate, auth.token, auth.id]);
+  }, [navigate, auth.token, auth.id, setAuth]);
 
   function handleLogout() {
     localStorage.clear();

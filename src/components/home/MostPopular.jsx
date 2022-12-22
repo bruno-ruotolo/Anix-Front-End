@@ -9,13 +9,12 @@ import __styledVariables from "../../global/StyledVariables";
 
 import homeService from "../../services/homeService";
 import AnimeComponent from "../AnimeComponent";
-import { __swalErrorMessage } from "../../utils/utils";
 import { FallingLines } from "react-loader-spinner";
 
 export default function MostPopular() {
   const scroll = Scroll.animateScroll;
 
-  const { auth } = useContext(AuthContext);
+  const { setAuth, auth } = useContext(AuthContext);
   const navigate = useNavigate();
   const ref = useRef(null);
 
@@ -30,17 +29,13 @@ export default function MostPopular() {
         setPopularAnime(animesList);
         setPageLoading(false);
       } catch (error) {
-        if (error.response.status === 401) {
-          __swalErrorMessage(
-            "Session is Expired or Invalid",
-            "Please, Login Again!"
-          );
-          setPageLoading(false);
-          navigate("/");
-        }
+        setPageLoading(false);
+        setAuth("");
+        localStorage.removeItem("auth");
+        navigate("/");
       }
     })();
-  }, [auth.token, navigate]);
+  }, [auth.token, navigate, setAuth]);
 
   function handleScroll(direction) {
     scroll.scrollMore(direction ? 700 : -700, {

@@ -9,11 +9,10 @@ import AnimeComponent from "../../components/AnimeComponent";
 import searchService from "../../services/searchService";
 import SearchHeader from "../../components/search/SearchHeader";
 import Header from "../../components/Header";
-import { __swalErrorMessage } from "../../utils/utils";
 import { FallingLines } from "react-loader-spinner";
 
 export default function Search() {
-  const { auth } = useContext(AuthContext);
+  const { setAuth, auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const { search: query } = useLocation();
@@ -36,19 +35,13 @@ export default function Search() {
         setQueryString(query);
         setPageLoading(false);
       } catch (error) {
-        if (error.response.status === 401) {
-          __swalErrorMessage(
-            "Session is Expired or Invalid",
-            "Please, Login Again!"
-          );
-          navigate("/");
-        } else {
-          __swalErrorMessage("Something got wrong", "Please, Try again later!");
-        }
         setPageLoading(false);
+        setAuth("");
+        localStorage.removeItem("auth");
+        navigate("/");
       }
     })();
-  }, [auth.token, queryString, navigate, searchParams, query]);
+  }, [auth.token, queryString, navigate, searchParams, query, setAuth]);
 
   return (
     <>

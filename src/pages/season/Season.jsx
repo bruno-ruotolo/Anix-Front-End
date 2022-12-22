@@ -8,11 +8,10 @@ import { AuthContext } from "../../contexts/AuthContext";
 import __styledVariables from "../../global/StyledVariables";
 import homeService from "../../services/homeService";
 import Header from "../../components/Header";
-import { __swalErrorMessage } from "../../utils/utils";
 import { FallingLines } from "react-loader-spinner";
 
 export default function Season() {
-  const { auth } = useContext(AuthContext);
+  const { setAuth, auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [seasonAnimes, setSeasonAnimes] = useState([]);
@@ -26,20 +25,13 @@ export default function Season() {
         setSeasonAnimes(response);
         setPageLoading(false);
       } catch (error) {
-        if (error.response === 401) {
-          __swalErrorMessage(
-            "Session is Expired or Invalid",
-            "Please, Login Again!"
-          );
-
-          navigate("/");
-        } else {
-          __swalErrorMessage("Something got wrong", "Please, Try again later!");
-        }
         setPageLoading(false);
+        setAuth("");
+        localStorage.removeItem("auth");
+        navigate("/");
       }
     })();
-  }, [navigate, auth.token, auth.id]);
+  }, [navigate, auth.token, auth.id, setAuth]);
 
   return (
     <>

@@ -6,10 +6,10 @@ import styled from "styled-components";
 import { AuthContext } from "../../contexts/AuthContext";
 import __styledVariables from "../../global/StyledVariables";
 import homeService from "../../services/homeService";
-import { __swalErrorMessage } from "../../utils/utils";
 
 export default function ForYou() {
-  const { auth } = useContext(AuthContext);
+  const { setAuth, auth } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const [forYouAnime, setForYouAnime] = useState({
@@ -32,25 +32,13 @@ export default function ForYou() {
         setForYouAnime(anime);
         setPageLoading(false);
       } catch (error) {
-        if (error.response.status === 401) {
-          __swalErrorMessage(
-            "Session is Expired or Invalid",
-            "Please, Login Again!"
-          );
-          navigate("/");
-          setPageLoading(false);
-        } else {
-          __swalErrorMessage(
-            "Something got wrong",
-            "Please, Try to login again!"
-          );
-          localStorage.removeItem("auth");
-          setPageLoading(false);
-          window.location.reload();
-        }
+        setPageLoading(false);
+        setAuth("");
+        localStorage.removeItem("auth");
+        navigate("/");
       }
     })();
-  }, [auth.token, navigate]);
+  }, [auth.token, navigate, setAuth]);
 
   return !pageLoading ? (
     <ForYouWrapper>

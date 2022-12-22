@@ -10,7 +10,6 @@ import DropDown from "../../components/DropDown";
 import RateButton from "../../components/anime/RateButton";
 import FavoriteButton from "../../components/anime/FavoriteButton";
 import Header from "../../components/Header";
-import { __swalErrorMessage } from "../../utils/utils";
 import { FallingLines, Oval } from "react-loader-spinner";
 
 export default function Anime() {
@@ -43,19 +42,7 @@ export default function Anime() {
         setRate(animeInfos.UserRateAnime[0]?.rate);
         setFavorite(animeInfos.UserFavoriteAnime.length > 0 ? true : false);
         setPageLoading(false);
-      } catch (error) {
-        if (error.response === 401) {
-          __swalErrorMessage(
-            "Session is Expired or Invalid",
-            "Please, Login Again!"
-          );
-
-          navigate("/");
-        } else {
-          __swalErrorMessage("Something got wrong", "Please, Try again later!");
-        }
-        setPageLoading(false);
-      }
+      } catch (error) {}
     })();
   }, [navigate, auth.token, id]);
 
@@ -64,19 +51,7 @@ export default function Anime() {
     try {
       await animeService.createStatus(auth.token, id, statusId);
       setStatusLoading(false);
-    } catch (error) {
-      if (error.response.status === 401) {
-        __swalErrorMessage(
-          "Session is Expired or Invalid",
-          "Please, Login Again!"
-        );
-
-        navigate("/");
-      } else {
-        __swalErrorMessage("Something got wrong", "Please, Try again later!");
-      }
-      setStatusLoading(false);
-    }
+    } catch (error) {}
   }
 
   async function handleRate(rate) {
@@ -85,19 +60,7 @@ export default function Anime() {
       await animeService.createRate(auth.token, id, rate);
       setRate(rate);
       setRateLoading(false);
-    } catch (error) {
-      if (error.response.status === 401) {
-        __swalErrorMessage(
-          "Session is Expired or Invalid",
-          "Please, Login Again!"
-        );
-
-        navigate("/");
-      } else {
-        __swalErrorMessage("Something got wrong", "Please, Try again later!");
-      }
-      setRateLoading(false);
-    }
+    } catch (error) {}
   }
 
   async function handleFavorite(favorite) {
@@ -107,19 +70,7 @@ export default function Anime() {
       else await animeService.deleteFavorite(auth.token, id);
       setFavorite(favorite);
       setFavoriteLoading(false);
-    } catch (error) {
-      if (error.response.status === 401) {
-        __swalErrorMessage(
-          "Session is Expired or Invalid",
-          "Please, Login Again!"
-        );
-
-        navigate("/");
-      } else {
-        __swalErrorMessage("Something got wrong", "Please, Try again later!");
-      }
-      setFavoriteLoading(false);
-    }
+    } catch (error) {}
   }
   return (
     <>

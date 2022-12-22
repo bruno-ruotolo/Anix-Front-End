@@ -7,5 +7,6 @@ export default function PrivateRoute({ children }) {
   const { auth } = useContext(AuthContext);
   if (!(auth && auth.token))
     __swalErrorMessage("Session is Expired or Invalid", "Please, Login Again!");
+
   return auth && auth.token ? children : <Navigate to="/" />;
 }
